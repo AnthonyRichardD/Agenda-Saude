@@ -36,7 +36,7 @@ token.value = '123'
       placeholder="Email pae"
       />
     </UFormField>
-
+    
     <UFormField label="Password" name="password">
       <CustomInput
       v-model="state.password"
