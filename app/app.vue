@@ -1,18 +1,10 @@
 <template>
   <div>
-    <header>
-      <nav>a</nav>
-    </header>
-
-    <main>
+    <main class="w-full max-w-md mx-auto p-4 bg-gray-100 h-dvh">
       <UApp>
         <NuxtPage />
       </UApp>
     </main>
-
-    <footer>
-      <p>&copy; 2025 Meu Site Incrível</p>
-    </footer>
   </div>
 </template>
 
