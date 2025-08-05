@@ -31,11 +31,17 @@ token.value = '123'
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormField label="Email" name="email">
-      <UInput v-model="state.email" />
+      <CustomInput
+      v-model="state.email"
+      placeholder="Email pae"
+      />
     </UFormField>
 
     <UFormField label="Password" name="password">
-      <UInput v-model="state.password" type="password" />
+      <CustomInput
+      v-model="state.password"
+      placeholder="Senia"
+      />
     </UFormField>
 
     <UButton type="submit"> Submit </UButton>
