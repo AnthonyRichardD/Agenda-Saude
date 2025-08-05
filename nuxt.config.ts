@@ -9,5 +9,5 @@ export default defineNuxtConfig({
   pwa: {
     /* PWA options */
   },
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 })

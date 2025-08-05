@@ -23,6 +23,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   })
   console.log(event.data)
 }
+
+const token = useCookie('token')
+token.value = '123'
 </script>
 
 <template>
