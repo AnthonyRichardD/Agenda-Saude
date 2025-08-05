@@ -1,13 +1,13 @@
 <template>
   <div>
     <header>
-      <nav>
-        a
-      </nav>
+      <nav>a</nav>
     </header>
 
     <main>
-      <NuxtPage />
+      <UApp>
+        <NuxtPage />
+      </UApp>
     </main>
 
     <footer>
@@ -16,5 +16,4 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
