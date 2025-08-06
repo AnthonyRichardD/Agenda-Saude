@@ -24,15 +24,23 @@ const isFormValid = computed(() => {
   )
 })
 
+const router = useRouter()
+const timerPage = useTimerPage()
+
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  if (!isFormValid.value) return
   toast.add({
     title: 'Sucesso!',
     description: 'O formulário foi enviado.',
     color: 'success',
   })
+
+  timerPage.value = true
   console.log(event.data)
+  router.push('/recuperar-senha-code')
 }
+
 </script>
 
 <template>
@@ -62,7 +70,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 type="submit"
                 class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
                 :class="isFormValid
-                    ? 'bg-[#134E4A] text-white'
+                    ? 'bg-[#134E4A] text-white' 
                     : 'bg-[#134E4AB2] text-[#ffffff70]'"
                 :disabled="!isFormValid"
                 >

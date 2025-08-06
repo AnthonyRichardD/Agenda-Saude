@@ -4,6 +4,28 @@ import * as z from 'zod'
 import IconLogo from '~/assets/icons/shield-icon.svg?component'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useTimerPage } from '~/composables/userTimePage'
+
+const timerPage = useTimerPage()
+const remaining = ref(300) 
+let interval: ReturnType<typeof setInterval> | null = null
+
+onMounted(() => {
+  if (timerPage.value) {
+    interval = setInterval(() => {
+      if (remaining.value > 0) {
+        remaining.value--
+      } else {
+        clearInterval(interval!)
+      }
+    }, 1000)
+    timerPage.value = false 
+  }
+})
+
+onBeforeUnmount(() => {
+  if (interval) clearInterval(interval)
+})
 
 const schema = z.object({
   code: z.string().min(6, 'A senha deve ter no mínimo 8 caracteres'),
@@ -73,7 +95,9 @@ const isFormValid = computed(() => {
                 <div class="mt-7">
                     <p class="text-[#115E59] text-[13px] font-medium text-center">
                     Não recebeu o código? 
-                    <NuxtLink to="/login" class="font-bold">Reenviar em ...</NuxtLink>
+                    <NuxtLink class="font-bold">Reenviar em 
+                    {{ Math.floor(remaining / 60) }}:
+                    {{ String(remaining % 60).padStart(2, '0') }}</NuxtLink>
                     </p>
                 </div>
             </UForm>    
