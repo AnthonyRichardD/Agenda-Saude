@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { vMaska } from 'maska/vue'
 
 const props = defineProps({
@@ -43,6 +42,18 @@ const internalValue = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val),
 })
+
+const isPasswordVisible = ref(false)
+function togglePasswordVisibility() {
+  isPasswordVisible.value = !isPasswordVisible.value
+}
+
+const inputType = computed(() => {
+  if (props.type === 'password') {
+    return isPasswordVisible.value ? 'text' : 'password'
+  }
+  return props.type
+})
 </script>
 
 <template>
@@ -52,17 +63,32 @@ const internalValue = computed({
       class="text-[#134E4A] font-semibold text-[14px]"
       >{{ props.label }}</label
     >
-    <input
-      :name="props.name"
-      v-maska="mask"
-      v-model="internalValue"
-      :type="props.type"
-      :placeholder="props.placeholder"
-      class="block w-full text-[#115E59] h-[45px] px-3 py-2 font-normal placeholder:text-[#115E59] bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
-      :class="{
-        'border-[#EF4444]': props.error,
-        'border-[#99F6E4] focus:border-teal-500': !props.error,
-      }"
-    />
+
+    <div class="relative">
+      <input
+        :name="props.name"
+        v-maska="mask"
+        v-model="internalValue"
+        :type="inputType"
+        :placeholder="props.placeholder"
+        class="block w-full text-[#115E59] h-[45px] px-3 py-2 font-normal placeholder:text-[#115E59] bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
+        :class="{
+          'border-[#EF4444]': props.error,
+          'border-[#99F6E4] focus:border-teal-500': !props.error,
+          'pr-10': props.type === 'password',
+        }"
+      />
+
+      <button
+        v-if="props.type === 'password'"
+        type="button"
+        @click="togglePasswordVisibility"
+        class="absolute inset-y-0 right-0 flex items-center pr-3 text-[#115E59] cursor-pointer"
+        aria-label="Alternar visibilidade da senha"
+      >
+        <LucideEyeOff v-if="isPasswordVisible" name="EyeOff" class="h-5 w-5" />
+        <LucideEye v-else name="Eye" class="h-5 w-5" />
+      </button>
+    </div>
   </div>
 </template>

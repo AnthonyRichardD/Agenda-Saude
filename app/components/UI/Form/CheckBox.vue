@@ -40,20 +40,7 @@ const internalValue = computed({
     <span
       class="border-[#0F766E] peer-checked:bg-teal-600 w-4 h-4 border-2 rounded-full flex items-center justify-center transition-all"
     >
-      <svg
-        class="w-3 h-3 text-black hidden peer-checked:block"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="4"
-          d="M5 13l4 4L19 7"
-        ></path>
-      </svg>
+      <LucideCheck class="text-white" />
     </span>
 
     <span v-if="props.label" class="text-[#0F766E] font-medium text-[12px]">{{

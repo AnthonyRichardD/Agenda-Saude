@@ -195,7 +195,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         <button
           type="submit"
-          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px]"
+          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] cursor-pointer"
           :disabled="!state.accept_terms"
           :class="{
             'bg-[#134E4AB2] text-[#ffffff70]': !state.accept_terms,
