@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@pinia/nuxt',
     'nuxt-svgo',
+    'nuxt-lucide-icons',
   ],
   fonts: {
     families: [{ name: 'Inter', provider: 'google' }],

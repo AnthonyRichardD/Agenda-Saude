@@ -18,6 +18,7 @@
     "eslint": "^9.32.0",
     "maska": "^3.2.0",
     "nuxt": "^4.0.1",
+    "nuxt-lucide-icons": "^1.0.5",
     "nuxt-svgo": "^4.2.6",
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
