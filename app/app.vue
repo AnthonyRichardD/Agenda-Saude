@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main class="w-full max-w-md mx-auto p-4 bg-gray-100 h-dvh">
+    <main class="w-full max-w-md mx-auto bg-gray-100 min-h-dvh">
       <UApp>
         <NuxtPage />
       </UApp>

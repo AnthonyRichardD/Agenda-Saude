@@ -22,3 +22,7 @@
 :root {
   --ui-primary: var(--ui-color-primary-700);
 }
+
+body {
+  font-family: 'Inter', sans-serif;
+}

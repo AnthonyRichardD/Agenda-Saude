@@ -19,6 +19,22 @@ const props = defineProps({
     type: String,
     default: 'text',
   },
+  label: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
+    type: String,
+    default: '',
+  },
+  name: {
+    type: String,
+    default: '',
+  },
+  class: {
+    type: String,
+    default: '',
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -30,14 +46,23 @@ const internalValue = computed({
 </script>
 
 <template>
-  <input
-    v-maska="mask"
-    v-model="internalValue"
-    :type="props.type"
-    class="block w-full h-[45px] px-3 py-2 font-normal placeholder:text-gray-400 text-gray-800 bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
-    :class="{
-      'border-red-500 focus:border-red-600 text-red-700': props.error,
-      'border-teal-300 focus:border-emerald-700 text-teal-700': !props.error,
-    }"
-  />
+  <div class="flex flex-col gap-1" :class="props.class">
+    <label
+      v-if="props.label"
+      class="text-[#134E4A] font-semibold text-[14px]"
+      >{{ props.label }}</label
+    >
+    <input
+      :name="props.name"
+      v-maska="mask"
+      v-model="internalValue"
+      :type="props.type"
+      :placeholder="props.placeholder"
+      class="block w-full text-[#115E59] h-[45px] px-3 py-2 font-normal placeholder:text-[#115E59] bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
+      :class="{
+        'border-[#EF4444]': props.error,
+        'border-[#99F6E4] focus:border-teal-500': !props.error,
+      }"
+    />
+  </div>
 </template>
