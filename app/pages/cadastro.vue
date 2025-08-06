@@ -121,7 +121,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           />
         </UFormField>
 
-        <div class="flex flex-col sm:flex-row gap-2">
+        <div class="flex flex-row gap-2">
           <UFormField name="phone" class="w-full" v-slot="{ error }">
             <CustomInput
               label="Telefone"
@@ -134,7 +134,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           </UFormField>
           <UFormField name="cpf" class="w-full" v-slot="{ error }">
             <CustomInput
-              class="w-1/2"
               label="CPF"
               v-model="state.cpf"
               type="text"
@@ -144,7 +143,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             />
           </UFormField>
         </div>
-        <div class="flex flex-col sm:flex-row gap-2">
+        <div class="flex flex-row gap-2">
           <UFormField name="birth_date" class="w-full" v-slot="{ error }">
             <CustomInput
               label="Data de Nascimento"
