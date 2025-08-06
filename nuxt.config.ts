@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@nuxt/fonts',
+    '@pinia/nuxt',
     'nuxt-svgo',
   ],
   fonts: {

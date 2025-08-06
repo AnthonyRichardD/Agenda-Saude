@@ -20,7 +20,6 @@ const props = defineProps({
   },
 })
 
-// Necessário para o v-model funcionar corretamente
 const emit = defineEmits(['update:modelValue'])
 
 const internalValue = computed({

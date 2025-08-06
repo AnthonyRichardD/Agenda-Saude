@@ -35,7 +35,6 @@ const birthDateSchema = z
     }
   )
 
-// AQUI ESTÁ A CORREÇÃO
 const schema = z
   .object({
     full_name: z.string().min(1, 'Nome é obrigatório'),
@@ -45,7 +44,6 @@ const schema = z
     birth_date: birthDateSchema,
     health_condition: z.string().min(1, 'Condição de Saúde é obrigatório'),
     password: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres'),
-    // O campo de confirmação só precisa da validação de tamanho mínimo aqui
     password_confirmation: z
       .string()
       .min(8, 'A confirmação deve ter no mínimo 8 caracteres'),
@@ -72,14 +70,14 @@ const state = reactive<Partial<Schema>>({
   accept_terms: false,
 })
 
-const toast = useToast()
+const useLoading = useLoadingStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  toast.add({
-    title: 'Sucesso!',
-    description: 'O formulário foi enviado.',
-    color: 'success',
-  })
+  useLoading.loading = true
+
   console.log(event.data)
+  setTimeout(() => {
+    useLoading.loading = false
+  }, 4000)
 }
 </script>
 

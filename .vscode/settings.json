@@ -1,5 +1,4 @@
 {
-  // --- Suas configurações existentes (estão ótimas!) ---
   "files.associations": {
     "*.css": "tailwindcss"
   },
