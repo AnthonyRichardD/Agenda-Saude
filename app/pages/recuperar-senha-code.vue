@@ -6,48 +6,57 @@ import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
 
-const timerPage = useTimerPage()
-const remaining = ref(10) 
-let interval: ReturnType<typeof setInterval> | null = null
+const { remainingTime, startTimer, updateRemainingTime } = useTimerPage()
+const toast = useToast()
 
-const startTimer = () => {
-  remaining.value = 10
-  if (interval) clearInterval(interval)
-  
-  interval = setInterval(() => {
-    if (remaining.value > 0) {
-      remaining.value--
-    } else {
-      if (interval) clearInterval(interval)
-    }
-  }, 1000)
+const canResend = computed(() => remainingTime.value <= 0)
+const displayTime = ref('05:00')
+
+const updateDisplay = () => {
+  const minutes = Math.floor(remainingTime.value / 60)
+  const seconds = remainingTime.value % 60
+  displayTime.value = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
 
+let interval: ReturnType<typeof setInterval> | null = null
+
 onMounted(() => {
-  if (timerPage.value) {
-    startTimer()
-  }
+  updateRemainingTime()
+  
+  interval = setInterval(() => {
+    updateRemainingTime() 
+    updateDisplay() 
+
+    if (remainingTime.value <= 0 && interval) {
+      clearInterval(interval)
+    }
+  }, 1000)
 })
 
 onBeforeUnmount(() => {
   if (interval) clearInterval(interval)
-  timerPage.value = false
 })
 
-const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   toast.add({
     title: 'Sucesso!',
     description: 'Código verificado com sucesso.', 
   })
-  console.log(event.data)
 }
 
 async function resendCode() {
-  if (remaining.value > 0) return 
+  if (!canResend.value) return
+  
   try {    
     startTimer()
-  } catch (error) {}
+    if (!interval) {
+      interval = setInterval(() => {
+        updateRemainingTime()
+        updateDisplay()
+      }, 1000)
+    }
+  } catch (error) {
+  }
 }
 
 const schema = z.object({
@@ -65,8 +74,6 @@ const isFormValid = computed(() => {
     !formRef.value?.errors?.code
   )
 })
-
-const canResend = computed(() => remaining.value <= 0)
 </script>
 
 <template>
@@ -113,7 +120,7 @@ const canResend = computed(() => remaining.value <= 0)
                         :class="canResend ? 'text-[#134E4A] cursor-pointer' : 'text-[#134E4A70] cursor-default'"
                         >
                             <span v-if="!canResend">
-                                Reenviar em {{ Math.floor(remaining / 60) }}:{{ String(remaining % 60).padStart(2, '0') }}
+                                Reenviar em {{ displayTime }}
                             </span>
                             <span v-else>Reenviar código</span>
                         </button>

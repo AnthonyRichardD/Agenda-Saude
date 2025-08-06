@@ -24,20 +24,22 @@ const isFormValid = computed(() => {
   )
 })
 
+const { startTimer } = useTimerPage()
 const router = useRouter()
-const timerPage = useTimerPage()
 
 const toast = useToast()
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!isFormValid.value) return
+
+  startTimer()
+  
   toast.add({
     title: 'Sucesso!',
-    description: 'O formulário foi enviado.',
+    description: 'Código enviado para seu e-mail.',
     color: 'success',
   })
-
-  timerPage.value = true
-  console.log(event.data)
+  
   router.push('/recuperar-senha-code')
 }
 
