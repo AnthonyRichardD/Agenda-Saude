@@ -7,45 +7,56 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
 
 const timerPage = useTimerPage()
-const remaining = ref(300) 
+const remaining = ref(10) 
 let interval: ReturnType<typeof setInterval> | null = null
+
+const startTimer = () => {
+  remaining.value = 10
+  if (interval) clearInterval(interval)
+  
+  interval = setInterval(() => {
+    if (remaining.value > 0) {
+      remaining.value--
+    } else {
+      if (interval) clearInterval(interval)
+    }
+  }, 1000)
+}
 
 onMounted(() => {
   if (timerPage.value) {
-    interval = setInterval(() => {
-      if (remaining.value > 0) {
-        remaining.value--
-      } else {
-        clearInterval(interval!)
-      }
-    }, 1000)
-    timerPage.value = false 
+    startTimer()
   }
 })
 
 onBeforeUnmount(() => {
   if (interval) clearInterval(interval)
+  timerPage.value = false
 })
-
-const schema = z.object({
-  code: z.string().min(6, 'A senha deve ter no mínimo 8 caracteres'),
-})
-
-const state = reactive<Partial<Schema>>({
-  code: '',
-})
-
-type Schema = z.output<typeof schema>
 
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   toast.add({
     title: 'Sucesso!',
-    description: 'O formulário foi enviado.',
-    color: 'success',
+    description: 'Código verificado com sucesso.', 
   })
   console.log(event.data)
 }
+
+async function resendCode() {
+  if (remaining.value > 0) return 
+  try {    
+    startTimer()
+  } catch (error) {}
+}
+
+const schema = z.object({
+  code: z.string().min(6, 'O código deve ter 6 dígitos'),
+})
+
+const state = reactive({
+  code: '',
+})
 
 const formRef = ref()
 const isFormValid = computed(() => {
@@ -55,6 +66,7 @@ const isFormValid = computed(() => {
   )
 })
 
+const canResend = computed(() => remaining.value <= 0)
 </script>
 
 <template>
@@ -77,8 +89,7 @@ const isFormValid = computed(() => {
                         v-model="state.code"
                         placeholder="000000"
                         :error="!!error"
-                    />
-                    
+                    />                 
                 </UFormField>
 
                 <button
@@ -95,9 +106,17 @@ const isFormValid = computed(() => {
                 <div class="mt-7">
                     <p class="text-[#115E59] text-[13px] font-medium text-center">
                     Não recebeu o código? 
-                    <NuxtLink class="font-bold">Reenviar em 
-                    {{ Math.floor(remaining / 60) }}:
-                    {{ String(remaining % 60).padStart(2, '0') }}</NuxtLink>
+                        <button 
+                        @click="resendCode"
+                        :disabled="!canResend"
+                        class="font-bold"
+                        :class="canResend ? 'text-[#134E4A] cursor-pointer' : 'text-[#134E4A70] cursor-default'"
+                        >
+                            <span v-if="!canResend">
+                                Reenviar em {{ Math.floor(remaining / 60) }}:{{ String(remaining % 60).padStart(2, '0') }}
+                            </span>
+                            <span v-else>Reenviar código</span>
+                        </button>
                     </p>
                 </div>
             </UForm>    
