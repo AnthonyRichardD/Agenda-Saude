@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { UCard } from '#components'
 import * as z from 'zod'
-import IconLogo from '~/assets/icons/shield-icon.svg?component'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
@@ -82,8 +81,12 @@ const isFormValid = computed(() => {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div>
-            <IconLogo width="57px" />
+          <div class="bg-[#0F766E] rounded-[20px] p-2">
+            <LucideShieldQuestionMark
+              :size="42"
+              stroke-width="1"
+              color="#F0F4F4"
+            />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
             Digite o Código

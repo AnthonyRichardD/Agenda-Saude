@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UCard } from '#components'
 import * as z from 'zod'
-import IconLogo from '~/assets/icons/email-icon.svg?component'
+import { ShieldCheck } from 'lucide-vue-next'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
@@ -27,7 +27,12 @@ const state = reactive<Partial<Schema>>({
 const formRef = ref()
 
 const isFormValid = computed(() => {
-  return state.email?.length && !formRef.value?.errors?.email
+  return (
+    state.password?.length &&
+    state.password_confirmation?.length &&
+    !formRef.value?.errors?.password &&
+    !formRef.value?.errors?.password_confirmation
+  )
 })
 
 const { startTimer } = useTimerPage()
@@ -60,21 +65,20 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div>
-            <IconLogo width="57px" />
+          <div class="bg-[#0F766E] rounded-[20px] p-2">
+            <ShieldCheck :size="42" stroke-width="1" color="#F0F4F4" />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
-            Esqueceu sua senha?
+            Digite sua nova Senha
           </h1>
           <p class="text-[#0F766E] text-[14px] font-medium text-center">
-            Digite seu e-mail e enviaremos um <br />
-            código para redefinir sua senha
+            Mussum Cacilds
           </p>
         </div>
 
-        <<UFormField name="password" v-slot="{ error }">
+        <UFormField name="password" v-slot="{ error }">
           <CustomInput
-            label="Senha"
+            label="Nova Senha"
             v-model="state.password"
             type="password"
             placeholder="Senha"
@@ -102,13 +106,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           "
           :disabled="!isFormValid"
         >
-          Enviar Código
+          Confirmar Senha
         </button>
 
         <div class="mt-7">
           <p class="text-[#115E59] text-[13px] font-medium text-center">
-            Lembrou da senha?
-            <NuxtLink to="/login" class="font-bold">Voltar ao login</NuxtLink>
+            Não recebeu o código?
+            <NuxtLink to="/recuperar-senha-code" class="font-bold"
+              >Voltar a recuperação
+            </NuxtLink>
           </p>
         </div>
       </UForm>
