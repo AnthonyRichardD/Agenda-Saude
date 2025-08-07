@@ -71,7 +71,7 @@ const inputType = computed(() => {
         v-model="internalValue"
         :type="inputType"
         :placeholder="props.placeholder"
-        class="block w-full text-[#115E59] h-[45px] px-3 py-2 font-normal placeholder:text-[#115E59] bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
+        class="block w-full text-[#115E59] h-[45px] px-3 py-2 font-normal placeholder:text-[#115E5980] bg-white bg-clip-padding border-2 rounded-lg transition-colors duration-200 focus:bg-white focus:outline-none"
         :class="{
           'border-[#EF4444]': props.error,
           'border-[#99F6E4] focus:border-teal-500': !props.error,

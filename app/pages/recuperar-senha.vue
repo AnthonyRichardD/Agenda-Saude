@@ -18,10 +18,7 @@ const state = reactive<Partial<Schema>>({
 const formRef = ref()
 
 const isFormValid = computed(() => {
-  return (
-    state.email?.length &&
-    !formRef.value?.errors?.email
-  )
+  return state.email?.length && !formRef.value?.errors?.email
 })
 
 const { startTimer } = useTimerPage()
@@ -33,59 +30,67 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!isFormValid.value) return
 
   startTimer()
-  
+
   toast.add({
     title: 'Sucesso!',
     description: 'Código enviado para seu e-mail.',
     color: 'success',
   })
-  
+
   router.push('/recuperar-senha-code')
 }
-
 </script>
 
 <template>
-    <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
-        <UCard class="w-full h-fit rounded-[15px] max-w-2xl">   
-            <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">  
-                <div class="flex flex-col items-center gap-1">
-                    <div>
-                        <IconLogo width="57px" />
-                    </div>
-                    <h1 class="text-[#042F2E] font-semibold text-[22px]">Esqueceu sua senha?</h1>
-                    <p class="text-[#0F766E] text-[14px] font-medium text-center">
-                        Digite seu e-mail e enviaremos um <br> código para redefinir sua senha
-                    </p>  
-                </div>
+  <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
+    <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4"
+        @submit="onSubmit"
+      >
+        <div class="flex flex-col items-center gap-1">
+          <div>
+            <IconLogo width="57px" />
+          </div>
+          <h1 class="text-[#042F2E] font-semibold text-[22px]">
+            Esqueceu sua senha?
+          </h1>
+          <p class="text-[#0F766E] text-[14px] font-medium text-center">
+            Digite seu e-mail e enviaremos um <br />
+            código para redefinir sua senha
+          </p>
+        </div>
 
-                <UFormField label="Email" name="email" v-slot="{ error }">
-                    <CustomInput
-                        v-model="state.email"
-                        placeholder="seu@email.com"
-                        :error="!!error"
-                    />
-                    
-                </UFormField>
+        <UFormField label="Email" name="email" v-slot="{ error }">
+          <CustomInput
+            v-model="state.email"
+            placeholder="seu@email.com"
+            :error="!!error"
+          />
+        </UFormField>
 
-                <button
-                type="submit"
-                class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
-                :class="isFormValid
-                    ? 'bg-[#134E4A] text-white' 
-                    : 'bg-[#134E4AB2] text-[#ffffff70]'"
-                :disabled="!isFormValid"
-                >
-                Enviar Código
-                </button>
+        <button
+          type="submit"
+          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
+          :class="
+            isFormValid
+              ? 'bg-[#134E4A] text-white'
+              : 'bg-[#134E4AB2] text-[#ffffff70]'
+          "
+          :disabled="!isFormValid"
+        >
+          Enviar Código
+        </button>
 
-                <div class="mt-7">
-                    <p class="text-[#115E59] text-[13px] font-medium text-center">
-                    Lembrou da senha? 
-                    <NuxtLink to="/login" class="font-bold">Voltar ao login</NuxtLink>
-                    </p>
-                </div>
-            </UForm>    
-        </UCard>
-    </div>
+        <div class="mt-7">
+          <p class="text-[#115E59] text-[13px] font-medium text-center">
+            Lembrou da senha?
+            <NuxtLink to="/login" class="font-bold">Voltar ao login</NuxtLink>
+          </p>
+        </div>
+      </UForm>
+    </UCard>
+  </div>
 </template>
