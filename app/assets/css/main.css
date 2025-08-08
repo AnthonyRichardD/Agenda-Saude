@@ -17,10 +17,12 @@
   --color-green-800: #016538;
   --color-green-900: #0a5331;
   --color-green-950: #052e16;
+  --color-customTeal-900: #115e59;
 }
 
 :root {
   --ui-primary: var(--ui-color-primary-700);
+  --ui-secondary: var(--color-customTeal-900);
 }
 
 body {
