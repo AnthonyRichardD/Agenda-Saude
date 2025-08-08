@@ -15,5 +15,6 @@ const useScheduling = useSchedulingStore()
     />
 
     <UIAgendamentoFormStepOne v-if="useScheduling.step === 1" />
+    <UIAgendamentoFormStepTwo v-if="useScheduling.step === 2" />
   </div>
 </template>
