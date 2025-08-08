@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UCard } from '#components'
 import * as z from 'zod'
-import { ShieldCheck } from 'lucide-vue-next'
+import { LockKeyhole } from 'lucide-vue-next'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
@@ -65,14 +65,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-2">
-            <ShieldCheck :size="42" stroke-width="1" color="#F0F4F4" />
+          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+            <LockKeyhole :size="42" stroke-width="1" color="#F0F4F4" />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
-            Digite sua nova Senha
+            Criar nova Senha
           </h1>
           <p class="text-[#0F766E] text-[14px] font-medium text-center">
-            Mussum Cacilds
+            Digite sua nova senha para a conta <br />
+            Email
           </p>
         </div>
 
@@ -81,7 +82,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             label="Nova Senha"
             v-model="state.password"
             type="password"
-            placeholder="Senha"
+            placeholder="Digite sua nova Senha"
             :error="!!error"
           />
         </UFormField>
@@ -91,7 +92,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             label="Confirme sua Senha"
             v-model="state.password_confirmation"
             type="password"
-            placeholder="Confirme sua senha"
+            placeholder="Confirme sua nova Senha"
             :error="!!error"
           />
         </UFormField>
@@ -106,17 +107,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           "
           :disabled="!isFormValid"
         >
-          Confirmar Senha
+          Redefinir Senha
         </button>
 
-        <div class="mt-7">
-          <p class="text-[#115E59] text-[13px] font-medium text-center">
-            Não recebeu o código?
-            <NuxtLink to="/recuperar-senha-code" class="font-bold"
-              >Voltar a recuperação
-            </NuxtLink>
-          </p>
-        </div>
+        <UCard class="bg-[#D8E9FF80] w-full h-fit rounded-[15px] max-w-2xl">
+          <h1 class="text-[#20488F] font-normal text-[14px]">
+            Requisitos da Nova Senha
+          </h1>
+          <ul
+            class="flex flex-col items-start ml-4 text-[#1A4592E5] text-[12px] font-normal text-start list-disc"
+          >
+            <li>Pelo menos 8 caracteres</li>
+            <li>Uma letra maiúscula</li>
+            <li>Uma letra minúscula</li>
+            <li>Um caracter especial</li>
+          </ul>
+        </UCard>
       </UForm>
     </UCard>
   </div>

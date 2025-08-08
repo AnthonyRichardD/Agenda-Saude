@@ -2,7 +2,7 @@
 import { UCard } from '#components'
 import * as z from 'zod'
 import CustomInput from '~/components/CustomInput.vue'
-import { ShieldAlert } from 'lucide-vue-next'
+import { Mail } from 'lucide-vue-next'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
 const schema = z.object({
@@ -51,8 +51,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-2">
-            <ShieldAlert :size="42" stroke-width="1" color="#F0F4F4" />
+          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+            <Mail :size="42" stroke-width="1" color="#F0F4F4" />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
             Esqueceu sua senha?

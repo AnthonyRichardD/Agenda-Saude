@@ -4,6 +4,7 @@ import * as z from 'zod'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
+import { Shield } from 'lucide-vue-next'
 
 const { remainingTime, startTimer, updateRemainingTime } = useTimerPage()
 const toast = useToast()
@@ -81,12 +82,8 @@ const isFormValid = computed(() => {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-2">
-            <LucideShieldQuestionMark
-              :size="42"
-              stroke-width="1"
-              color="#F0F4F4"
-            />
+          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+            <Shield :size="42" stroke-width="1" color="#F0F4F4" />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
             Digite o Código
