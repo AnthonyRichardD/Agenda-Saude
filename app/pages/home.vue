@@ -16,7 +16,9 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex flex-col w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8 gap-3">
+  <div
+    class="flex flex-col w-full min-h-dvh bg-[#EAFDF9] p-[20px] pb-[70px] py-8 gap-3"
+  >
     <div class="flex flex-row items-center justify-between gap-3">
       <div class="flex flex-col">
         <h1 class="text-[#042F2E] font-semibold text-[22px]">Olá, User!</h1>
@@ -160,5 +162,6 @@ definePageMeta({
         </p>
       </div>
     </UCard>
+    <NavMenu />
   </div>
 </template>
