@@ -51,8 +51,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @submit="onSubmit"
       >
         <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#CCFBF1] rounded-[20px] p-2">
-            <IconLogo width="57px" />
+          <div
+            class="bg-[#CCFBF1] rounded-[20px] w-[75px] h-[75px] flex items-center justify-center"
+          >
+            <IconLogo class="mr-[-3px]" width="57px" />
           </div>
           <h1 class="text-[#042F2E] font-semibold text-[22px]">
             Bem vindo de volta!
