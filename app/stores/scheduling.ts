@@ -12,11 +12,20 @@ export const useSchedulingStore = defineStore('scheduling', () => {
     step.value--
   }
 
-  const formData = reactive({
+  interface Slot {
+    id: number
+    value: string
+  }
+  const formData = reactive<{
+    service: string
+    doctor: string
+    date: string
+    slot: Slot
+  }>({
     service: '',
     doctor: '',
     date: '',
-    time: '',
+    slot: undefined,
   })
 
   const services = ref([
