@@ -26,9 +26,29 @@ definePageMeta({
     <div
       class="w-full my-[26px] bg-[#FCFFFE] rounded-[15px] border-2 border-[#CCFBF1] p-[20px] space-y-7"
     >
-      <h1 class="text-[#042F2E] text-[24px] font-semibold">
-        Informações do Agendamento
-      </h1>
+      <div class="space-y-6">
+        <div class="flex items-center gap-2">
+          <LucideUser :size="24" color="#0F766E" />
+          <div class="text-[15px] text-[#042F2E]">
+            <h2 class="font-bold">Clínico Geral</h2>
+            <p class="font-medium">Dr. João da Silva</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <LucideCalendar :size="24" color="#0F766E" />
+          <div class="text-[15px] text-[#042F2E]">
+            <h2 class="font-bold">15 de Agosto, 2025</h2>
+            <p class="font-medium">Quarta-feira</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <LucideClock :size="24" color="#0F766E" />
+          <div class="text-[15px] text-[#042F2E]">
+            <h2 class="font-bold">09:30</h2>
+            <p class="font-medium">Chegar 20 min antes</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="w-full space-y-2">
       <UButton
