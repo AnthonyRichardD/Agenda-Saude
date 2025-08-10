@@ -36,6 +36,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   })
   console.log(event.data)
   setTimeout(() => {
+    const token = useCookie('token')
+    token.value = 'token'
+    navigateTo('/home')
     useLoading.loading = false
   }, 4000)
 }

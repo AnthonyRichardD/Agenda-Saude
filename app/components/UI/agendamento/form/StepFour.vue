@@ -30,6 +30,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   setTimeout(() => {
     useLoading.loading = false
+    navigateTo('/agendamento/confirmacao')
   }, 4000)
 }
 
