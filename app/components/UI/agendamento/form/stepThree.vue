@@ -30,27 +30,21 @@ const maxDate = computed(() => {
 
 const isDateUnavailable = (date: DateValue): boolean => {
   const dateString = date.toString()
-
   return !availableDatesSet.value.has(dateString)
 }
 
-const formatDate = (date: Date | null): string => {
-  console.log(date)
-  if (!date || !(date instanceof Date)) {
-    return ''
-  }
-  return date.toLocaleDateString('pt-BR', {
-    dateStyle: 'long',
-    timeZone: 'UTC',
-  })
+const isDateAvailable = (day: DateValue): boolean => {
+  const dateString = day.toString()
+  return availableDatesSet.value.has(dateString)
 }
 </script>
+
 <template>
   <div
     class="p-4 bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col items-center"
   >
     <div
-      class="w-full max-w-xs mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center"
+      class="w-full max-w-xs bg-white border-2 border-[#99F6E4] p-2 rounded-[15px]"
     >
       <UCalendar
         v-model="selectedDate"
@@ -60,20 +54,27 @@ const formatDate = (date: Date | null): string => {
         :year-controls="false"
         locale="pt-BR"
         class="w-full"
-      />
-
+      >
+        <template #day="{ day }">
+          <UChip
+            :show="isDateAvailable(day)"
+            color="success"
+            size="2xs"
+            class="w-full h-full flex items-center justify-center"
+          >
+            <span>{{ day.day }}</span>
+          </UChip>
+        </template>
+      </UCalendar>
+    </div>
+    <div v-if="selectedDate">
       <div
-        v-if="selectedDate"
-        class="mt-6 w-full p-4 bg-primary-100 dark:bg-primary-900/50 border-l-4 border-primary-500 dark:border-primary-400 text-primary-700 dark:text-primary-300 rounded-lg"
+        class="mt-6 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded-lg"
       >
         <p class="font-semibold">Data selecionada:</p>
-        <p class="text-lg">{{ selectedDate }}</p>
-      </div>
-      <div
-        v-else
-        class="mt-6 w-full p-4 bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 rounded-lg text-center"
-      >
-        <p>Nenhuma data selecionada.</p>
+        <p class="text-lg">
+          {{ new Date(selectedDate).toLocaleDateString('pt-BR') }}
+        </p>
       </div>
     </div>
   </div>
