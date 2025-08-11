@@ -12,7 +12,7 @@ interface LoginResponse {
 
 export const useLoginStore = () => {
   const login = (credentials: { email: string; password: string }) => {
-    return useApiFetch<LoginResponse>('api/auth/login', {
+    return useApiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
       body: credentials,
     })

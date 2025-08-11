@@ -2,6 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import IconLogo from '~/assets/icons/logo.svg?component'
+import moment from 'moment'
 
 const birthDateSchema = z
   .string()
@@ -59,25 +60,56 @@ const schema = z
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  full_name: '',
-  email: '',
-  phone: '',
-  cpf: '',
-  birth_date: '',
-  health_condition: '',
-  password: '',
-  password_confirmation: '',
-  accept_terms: false,
+  full_name: 'Anthony Richard da Silva Martins',
+  email: 'thony.punk@gmail.com',
+  phone: '(81) 989589709',
+  cpf: '130.951.164-03',
+  birth_date: '09/12/2003',
+  health_condition: 'Nada',
+  password: '123123123',
+  password_confirmation: '123123123',
+  accept_terms: true,
 })
 
+const { createPatient } = usePatientStore()
 const useLoading = useLoadingStore()
+const alertStore = useAlertStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useLoading.loading = true
 
-  console.log(event.data)
-  setTimeout(() => {
+  const payload = {
+    cpf: event.data.cpf.replace(/\D/g, ''),
+    full_name: event.data.full_name,
+    email: event.data.email,
+    phone: event.data.phone.replace(/\D/g, ''),
+    birth_date: moment(event.data.birth_date).format('DD-MM-YYYY'),
+    health_conditions: event.data.health_condition,
+    password: event.data.password,
+    confirmPassword: event.data.password_confirmation,
+  }
+
+  try {
+    const { data, error } = await createPatient(payload)
+
+    if (error.value) {
+      const errorMessage =
+        error.value.data?.message || 'Ocorreu um erro ao criar a conta.'
+      alertStore.showAlert('Erro no Cadastro', errorMessage)
+
+      console.error('Erro da API:', errorMessage)
+      return
+    }
+
+    if (data.value) {
+      if (!data.value.is_error) {
+        navigateTo('/login')
+      }
+    }
+  } catch (e) {
+    console.error('Ocorreu um erro inesperado no processo:', e)
+  } finally {
     useLoading.loading = false
-  }, 4000)
+  }
 }
 </script>
 
