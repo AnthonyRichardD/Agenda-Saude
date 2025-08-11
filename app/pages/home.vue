@@ -25,7 +25,7 @@ const user = ref(auth.getUser())
     <div class="flex flex-row items-center justify-between gap-3">
       <div class="flex flex-col">
         <h1 class="text-[#042F2E] font-semibold text-[22px]">
-          Olá, {{ user?.full_name }}
+          Olá, {{ user?.full_name.split(' ')[0] }}
         </h1>
         <p class="text-[#0F766E] text-[14px] font-medium">
           Como está sua saúde hoje?
