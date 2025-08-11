@@ -2,13 +2,17 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import IconLogo from '~/assets/icons/logo.svg?component'
+type Schema = z.output<typeof schema>
+
+const auth = useAuthStore()
+if (auth.isAuthenticated()) {
+  navigateTo('/home')
+}
 
 const schema = z.object({
   email: z.email('Email inválido'),
   password: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres'),
 })
-
-type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   email: '',
@@ -27,20 +31,31 @@ const isFormValid = computed(() => {
 })
 const useLoading = useLoadingStore()
 const toast = useToast()
+const { login } = useLoginStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useLoading.loading = true
-  toast.add({
-    title: 'Sucesso!',
-    description: 'O formulário foi enviado.',
-    color: 'success',
-  })
-  console.log(event.data)
-  setTimeout(() => {
-    const token = useCookie('token')
-    token.value = 'token'
-    navigateTo('/home')
+  try {
+    const response = await login(event.data)
+    const data = response.data.value.data
+
+    if (!response.data.value.data.is_error) {
+      console.log(data)
+      const token = useCookie('auth_token')
+      token.value = data.token
+      const user = useCookie('user')
+      user.value = data.user
+      navigateTo('/home')
+    }
+  } catch (e) {
+    console.error('Ocorreu um erro inesperado:', e)
+    toast.add({
+      title: 'Erro Inesperado!',
+      description: 'Por favor, tente novamente mais tarde.',
+      color: 'error',
+    })
+  } finally {
     useLoading.loading = false
-  }, 4000)
+  }
 }
 </script>
 

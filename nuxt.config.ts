@@ -25,4 +25,9 @@ export default defineNuxtConfig({
     componentPrefix: 'icon',
   },
   devtools: { enabled: false },
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:5001',
+    },
+  },
 })

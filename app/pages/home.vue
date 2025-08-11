@@ -13,6 +13,9 @@ import {
 definePageMeta({
   middleware: ['auth'],
 })
+
+const auth = useAuthStore()
+const user = ref(auth.getUser())
 </script>
 
 <template>
@@ -21,7 +24,9 @@ definePageMeta({
   >
     <div class="flex flex-row items-center justify-between gap-3">
       <div class="flex flex-col">
-        <h1 class="text-[#042F2E] font-semibold text-[22px]">Olá, User!</h1>
+        <h1 class="text-[#042F2E] font-semibold text-[22px]">
+          Olá, {{ user?.full_name }}
+        </h1>
         <p class="text-[#0F766E] text-[14px] font-medium">
           Como está sua saúde hoje?
         </p>
