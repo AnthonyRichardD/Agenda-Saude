@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const alertStore = useAlertStore()
-const { isOpen, title, message } = storeToRefs(alertStore)
+const { title, message } = storeToRefs(alertStore)
 
 const close = (): void => {
   alertStore.hideAlert()
@@ -16,7 +16,6 @@ onMounted(() => {
 <template>
   <Transition name="toast-slide">
     <div
-      v-if="isOpen"
       class="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none"
     >
       <div class="max-w-md w-full p-4">

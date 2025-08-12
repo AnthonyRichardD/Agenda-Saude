@@ -19,40 +19,42 @@ const state = reactive<Partial<Schema>>({
   password: '',
 })
 
-const formRef = ref()
-
-const isFormValid = computed(() => {
-  return (
-    state.email?.length &&
-    state.password?.length &&
-    !formRef.value?.errors?.email &&
-    !formRef.value?.errors?.password
-  )
-})
 const useLoading = useLoadingStore()
-const toast = useToast()
 const { login } = useLoginStore()
+const alertStore = useAlertStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useLoading.loading = true
-  try {
-    const response = await login(event.data)
-    const data = response.data.value.data
+  const payload = {
+    email: event.data.email,
+    password: event.data.password,
+  }
 
-    if (!response.data.value.data.is_error) {
-      console.log(data)
-      const token = useCookie('auth_token')
-      token.value = data.token
-      const user = useCookie('user')
-      user.value = data.user
-      navigateTo('/home')
+  try {
+    const { data, error } = await login(payload)
+
+    if (error.value) {
+      const errorMessage =
+        error.value.data?.message || 'Ocorreu um erro ao entrar na conta.'
+      alertStore.showAlert('Erro no login', errorMessage)
+
+      console.error('Erro da API:', errorMessage)
+      return
+    }
+
+    if (data.value) {
+      if (!data.value.is_error) {
+        const token = useCookie('auth_token')
+        token.value = data.value.data.token
+
+        const user = useCookie('user')
+        user.value = data.value.data.user
+
+        alertStore.hideAlert()
+        navigateTo('/home')
+      }
     }
   } catch (e) {
-    console.error('Ocorreu um erro inesperado:', e)
-    toast.add({
-      title: 'Erro Inesperado!',
-      description: 'Por favor, tente novamente mais tarde.',
-      color: 'error',
-    })
+    console.error('Ocorreu um erro inesperado no processo:', e)
   } finally {
     useLoading.loading = false
   }
@@ -113,13 +115,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         <button
           type="submit"
-          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
-          :class="
-            isFormValid
-              ? 'bg-[#134E4A] text-white'
-              : 'bg-[#134E4AB2] text-[#ffffff70]'
-          "
-          :disabled="!isFormValid"
+          class="bg-[#134E4A] text-white font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
         >
           Entrar
         </button>
