@@ -13,7 +13,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="w-full h-[70px] border flex justify-around items-center mb-9">
+  <div class="w-full h-[70px] flex justify-between items-center mb-9">
     <div
       class="flex flex-col items-center justify-center"
       v-for="step in props.maxSteps"
