@@ -1,7 +1,13 @@
 <script setup lang="ts">
-const useScheduling = useSchedulingStore()
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useConsultationService } from '~/services/useConsultationService'
+interface IService {
+  id: number
+  name: string
+  duration_minutes: number
+  active: boolean
+}
 
 const schema = z.object({
   service: z.string().min(1, 'Serviço é obrigatório'),
@@ -9,6 +15,7 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>
 
+const useScheduling = useSchedulingStore()
 const state = reactive<Partial<Schema>>({
   service: useScheduling.formData.service || '',
 })
@@ -17,6 +24,24 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.service = event.data.service
   useScheduling.nextStep()
 }
+
+const consultationService = useConsultationService()
+const getList = async () => {
+  const { data, error } = await consultationService.getConsultations()
+
+  if (error.value) {
+    console.error('Erro ao buscar serviços:', error.value.message)
+  }
+
+  if (data.value) {
+    useScheduling.services = data.value.map((service: IService) => ({
+      label: service.name,
+      value: String(service.id),
+    }))
+  }
+}
+
+await getList()
 </script>
 
 <template>

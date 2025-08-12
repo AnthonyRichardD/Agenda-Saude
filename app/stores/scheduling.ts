@@ -28,24 +28,7 @@ export const useSchedulingStore = defineStore('scheduling', () => {
     slot: undefined,
   })
 
-  const services = ref([
-    {
-      value: '1',
-      label: 'Dermatologia',
-    },
-    {
-      value: '2',
-      label: 'Cardiologia',
-    },
-    {
-      value: '3',
-      label: 'Traumatologia',
-    },
-    {
-      value: '4',
-      label: 'Ginecologia',
-    },
-  ])
+  const services = ref([])
 
   return {
     step,

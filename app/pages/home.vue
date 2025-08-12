@@ -41,6 +41,8 @@ const user = ref(auth.getUser())
         Proximas Consultas
       </h1>
       <button
+        type="button"
+        @click="navigateTo('/agendamento/consulta')"
         class="flex flex-row items-center justify-center gap-2 w-[140px] h-[40px] text-white bg-[#0D9488] rounded-[10px] hover:bg-[#0F766E] active:bg-[#115E59] active:scale-95 transition-all duration-150 ease-in-out"
       >
         <Plus />
