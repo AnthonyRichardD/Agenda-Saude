@@ -28,10 +28,22 @@ export const useConsultationService = () => {
     )
   }
 
+  const createConsultation = (data: {
+    professional_id: number
+    consultation_type_id: number
+    slot_id: number
+  }) => {
+    return useApiFetch<any>('/appointments/create', {
+      method: 'POST',
+      body: data,
+    })
+  }
+
   return {
     getConsultations,
     getProfessionalsByService,
     getAvailableDaysByProfessional,
     getAvailableSlotByProfessional,
+    createConsultation,
   }
 }

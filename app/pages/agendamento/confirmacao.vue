@@ -40,6 +40,10 @@ const dayOfWeek = computed(() => {
   const day = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(date)
   return day.charAt(0).toUpperCase() + day.slice(1)
 })
+
+onUnmounted(() => {
+  useScheduling.resetFormData()
+})
 </script>
 
 <template>
@@ -86,7 +90,7 @@ const dayOfWeek = computed(() => {
           <div class="text-[15px] text-[#042F2E]">
             <h2 class="font-bold">
               {{
-                moment(useScheduling.formData.slot.start_time).format('HH:mm')
+                moment(useScheduling.formData.slot?.start_time).format('HH:mm')
               }}
             </h2>
             <p class="font-medium">Chegar 20 min antes</p>

@@ -27,13 +27,21 @@ export const useSchedulingStore = defineStore('scheduling', () => {
     service: string
     doctor: string
     date: string
-    slot: ISlot
+    slot: ISlot | undefined
   }>({
     service: '',
     doctor: '',
     date: '',
     slot: undefined,
   })
+
+  const resetFormData = () => {
+    formData.service = ''
+    formData.doctor = ''
+    formData.date = ''
+    formData.slot = undefined
+    step.value = 1
+  }
 
   const availableDates = ref([])
 
@@ -50,6 +58,7 @@ export const useSchedulingStore = defineStore('scheduling', () => {
     doctors,
     slots,
     availableDates,
+    resetFormData,
     nextStep,
     prevStep,
   }

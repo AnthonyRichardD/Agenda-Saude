@@ -26,18 +26,40 @@ const state = reactive<Partial<Schema>>({
 
 const useLoading = useLoadingStore()
 
+const consultationService = useConsultationService()
+const alertStore = useAlertStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.slot = event.data.slot
 
   useLoading.loading = true
 
-  setTimeout(() => {
+  if (!useScheduling.formData.slot) {
+    console.error('Slot is required to create a consultation')
+    return
+  }
+
+  const payload = {
+    professional_id: Number(useScheduling.formData.doctor),
+    consultation_type_id: Number(useScheduling.formData.service),
+    slot_id: Number(useScheduling.formData.slot.slot_id),
+  }
+  try {
+    const { data, error } =
+      await consultationService.createConsultation(payload)
+    if (error.value) {
+      alertStore.showAlert('Erro ao agendar consulta', error.value.data.message)
+    }
+
+    if (data.value && !data.value.is_error) {
+      navigateTo('/agendamento/confirmacao')
+    }
+  } catch (error) {
+    console.error('Erro ao buscar serviços:', error)
+  } finally {
     useLoading.loading = false
-    navigateTo('/agendamento/confirmacao')
-  }, 4000)
+  }
 }
 
-const consultationService = useConsultationService()
 const getAvailableSlot = async (professionalId: string, date: string) => {
   const { data, error } =
     await consultationService.getAvailableSlotByProfessional(
