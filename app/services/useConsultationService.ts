@@ -16,10 +16,22 @@ export const useConsultationService = () => {
       method: 'GET',
     })
   }
+  const getAvailableSlotByProfessional = (
+    professionalId: string,
+    date: string
+  ) => {
+    return useApiFetch<any>(
+      `/professionals/${professionalId}/available-slots?date=${date}`,
+      {
+        method: 'GET',
+      }
+    )
+  }
 
   return {
     getConsultations,
     getProfessionalsByService,
     getAvailableDaysByProfessional,
+    getAvailableSlotByProfessional,
   }
 }

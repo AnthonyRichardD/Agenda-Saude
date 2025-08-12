@@ -1,6 +1,44 @@
 <script setup lang="ts">
+import moment from 'moment'
+
 definePageMeta({
   middleware: ['auth'],
+})
+
+const useScheduling = useSchedulingStore()
+if (useScheduling.formData.slot == undefined) {
+  navigateTo('/home')
+}
+
+const selectedDoctor = computed(() => {
+  return useScheduling.doctors.find(
+    (doc) => doc.value == useScheduling.formData.doctor
+  )
+})
+
+const selectedService = computed(() => {
+  return useScheduling.services.find(
+    (service) => service.value == useScheduling.formData.service
+  )
+})
+
+const formattedDate = computed(() => {
+  if (!useScheduling.formData.slot?.start_time) return ''
+  const date = new Date(useScheduling.formData.slot.start_time)
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date)
+})
+
+const dayOfWeek = computed(() => {
+  if (!useScheduling.formData.slot?.start_time) return ''
+  const date = new Date(useScheduling.formData.slot.start_time)
+
+  const day = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(date)
+  return day.charAt(0).toUpperCase() + day.slice(1)
 })
 </script>
 
@@ -30,21 +68,27 @@ definePageMeta({
         <div class="flex items-center gap-2">
           <LucideUser :size="24" color="#0F766E" />
           <div class="text-[15px] text-[#042F2E]">
-            <h2 class="font-bold">Clínico Geral</h2>
-            <p class="font-medium">Dr. João da Silva</p>
+            <h2 class="font-bold">{{ selectedService?.label }}</h2>
+            <p class="font-medium">{{ selectedDoctor?.label }}</p>
           </div>
         </div>
+
         <div class="flex items-center gap-2">
           <LucideCalendar :size="24" color="#0F766E" />
           <div class="text-[15px] text-[#042F2E]">
-            <h2 class="font-bold">15 de Agosto, 2025</h2>
-            <p class="font-medium">Quarta-feira</p>
+            <h2 class="font-bold">{{ formattedDate }}</h2>
+            <p class="font-medium">{{ dayOfWeek }}</p>
           </div>
         </div>
+
         <div class="flex items-center gap-2">
           <LucideClock :size="24" color="#0F766E" />
           <div class="text-[15px] text-[#042F2E]">
-            <h2 class="font-bold">09:30</h2>
+            <h2 class="font-bold">
+              {{
+                moment(useScheduling.formData.slot.start_time).format('HH:mm')
+              }}
+            </h2>
             <p class="font-medium">Chegar 20 min antes</p>
           </div>
         </div>

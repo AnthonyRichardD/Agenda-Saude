@@ -22,7 +22,6 @@ const state = reactive<Partial<Schema>>({
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.service = event.data.service
-  console.log('data depois do passo 1', useScheduling.formData)
 
   useScheduling.nextStep()
 }

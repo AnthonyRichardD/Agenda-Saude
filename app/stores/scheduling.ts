@@ -1,4 +1,15 @@
 export const useSchedulingStore = defineStore('scheduling', () => {
+  interface ISlot {
+    slot_id: number
+    start_time: string
+    end_time: string
+  }
+
+  interface IProfessional {
+    label: string
+    value: string
+    description: string
+  }
   const step = ref(1)
   const maxStep = ref(4)
 
@@ -12,15 +23,11 @@ export const useSchedulingStore = defineStore('scheduling', () => {
     step.value--
   }
 
-  interface Slot {
-    id: number
-    value: string
-  }
   const formData = reactive<{
     service: string
     doctor: string
     date: string
-    slot: Slot
+    slot: ISlot
   }>({
     service: '',
     doctor: '',
@@ -30,15 +37,18 @@ export const useSchedulingStore = defineStore('scheduling', () => {
 
   const availableDates = ref([])
 
-  const services = ref([])
+  const services = ref<{ label: string; value: string }[]>([])
 
-  const doctors = ref([])
+  const doctors = ref<IProfessional[]>([])
+
+  const slots = ref<ISlot[]>([])
 
   return {
     step,
     formData,
     services,
     doctors,
+    slots,
     availableDates,
     nextStep,
     prevStep,

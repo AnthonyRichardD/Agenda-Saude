@@ -2,6 +2,8 @@
 const useScheduling = useSchedulingStore()
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useConsultationService } from '~/services/useConsultationService'
+import moment from 'moment'
 
 const schema = z.object({
   slot: z.union([
@@ -9,8 +11,9 @@ const schema = z.object({
       message: 'Selecione um horário',
     }),
     z.object({
-      id: z.number(),
-      value: z.string(),
+      slot_id: z.number(),
+      start_time: z.string(),
+      end_time: z.string(),
     }),
   ]),
 })
@@ -24,8 +27,8 @@ const state = reactive<Partial<Schema>>({
 const useLoading = useLoadingStore()
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  console.log(event.data)
   useScheduling.formData.slot = event.data.slot
+
   useLoading.loading = true
 
   setTimeout(() => {
@@ -34,36 +37,27 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   }, 4000)
 }
 
-const mockSlots = reactive([
-  {
-    id: 1,
-    value: '10:00',
-  },
-  {
-    id: 2,
-    value: '11:00',
-  },
-  {
-    id: 3,
-    value: '12:00',
-  },
-  {
-    id: 4,
-    value: '13:00',
-  },
-  {
-    id: 5,
-    value: '14:00',
-  },
-  {
-    id: 6,
-    value: '15:00',
-  },
-  {
-    id: 7,
-    value: '16:00',
-  },
-])
+const consultationService = useConsultationService()
+const getAvailableSlot = async (professionalId: string, date: string) => {
+  const { data, error } =
+    await consultationService.getAvailableSlotByProfessional(
+      professionalId,
+      date
+    )
+
+  if (error.value) {
+    console.error('Erro ao buscar serviços:', error.value.message)
+  }
+
+  if (data.value) {
+    useScheduling.slots = data.value
+  }
+}
+
+await getAvailableSlot(
+  useScheduling.formData.doctor,
+  useScheduling.formData.date
+)
 
 const form = ref()
 watch(
@@ -95,16 +89,16 @@ watch(
         <UFormField class="text-center" name="slot" v-slot="{ error }">
           <div class="grid grid-cols-2 gap-4">
             <div
-              v-for="slot in mockSlots"
+              v-for="slot in useScheduling.slots"
               @click="state.slot = slot"
-              :key="slot.id"
+              :key="slot.slot_id"
               class="border-2 cursor-pointer border-[#99F6E4] rounded-[10px] p-3 text-center text-[#134E4A] text-[16px] font-medium"
               :class="{
                 'bg-[#0F766E] text-white !border-[#0F766E]':
-                  state.slot?.id == slot.id,
+                  state.slot?.slot_id == slot.slot_id,
               }"
             >
-              {{ slot.value }}
+              {{ moment(slot.start_time).format('HH:mm') }}
             </div>
           </div>
         </UFormField>

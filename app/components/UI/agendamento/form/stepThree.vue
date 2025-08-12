@@ -34,7 +34,6 @@ watch(selectedDate, () => {
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.date = event.data.date
-  console.log('data depois do passo 3', useScheduling.formData)
   useScheduling.nextStep()
 }
 

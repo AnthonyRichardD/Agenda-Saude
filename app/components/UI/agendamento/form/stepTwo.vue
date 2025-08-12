@@ -16,7 +16,6 @@ const state = reactive<Partial<Schema>>({
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.doctor = event.data.medic
-  console.log('data depois do passo 2', useScheduling.formData)
   useScheduling.nextStep()
 }
 
