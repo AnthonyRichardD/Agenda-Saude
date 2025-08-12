@@ -30,9 +30,12 @@ export const useSchedulingStore = defineStore('scheduling', () => {
 
   const services = ref([])
 
+  const doctors = ref([])
+
   return {
     step,
     services,
+    doctors,
     formData,
     nextStep,
     prevStep,

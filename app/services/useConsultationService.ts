@@ -5,8 +5,14 @@ export const useConsultationService = () => {
       method: 'GET',
     })
   }
+  const getProfessionalsByService = (serviveId: string) => {
+    return useApiFetch<any>(`/consultationtype/${serviveId}/professionals`, {
+      method: 'GET',
+    })
+  }
 
   return {
     getConsultations,
+    getProfessionalsByService,
   }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useConsultationService } from '~/services/useConsultationService'
 
 const schema = z.object({
   medic: z.string().min(1, 'Escolha um médico'),
@@ -15,26 +16,30 @@ const state = reactive<Partial<Schema>>({
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.doctor = event.data.medic
+  console.log('data depois do passo 2', useScheduling.formData)
   useScheduling.nextStep()
 }
 
-const medicosDisponiveis = ref([
-  {
-    value: 'carlos-roberto',
-    label: 'Dr. Carlos Roberto',
-    description: 'Disponível para consultas',
-  },
-  {
-    value: 'ana-beatriz',
-    label: 'Dra. Ana Beatriz',
-    description: 'Disponível para consultas',
-  },
-  {
-    value: 'bruna-tavares',
-    label: 'Dra. Bruna Tavares',
-    description: 'Disponível para consultas',
-  },
-])
+const consultationService = useConsultationService()
+const getProfessionals = async () => {
+  const { data, error } = await consultationService.getProfessionalsByService(
+    useScheduling.formData.service
+  )
+
+  if (error.value) {
+    console.error('Erro ao buscar serviços:', error.value.message)
+  }
+
+  if (data.value) {
+    useScheduling.doctors = data.value.map((professional: any) => ({
+      label: professional.name,
+      value: String(professional.id),
+      description: 'Disponível para consultas',
+    }))
+  }
+}
+
+getProfessionals()
 </script>
 
 <template>
@@ -50,7 +55,7 @@ const medicosDisponiveis = ref([
         <UFormField name="medic" v-slot="{ error }">
           <UIAgendamentoMedicSelect
             v-model="state.medic"
-            :options="medicosDisponiveis"
+            :options="useScheduling.doctors"
             :error="!!error"
           />
         </UFormField>
