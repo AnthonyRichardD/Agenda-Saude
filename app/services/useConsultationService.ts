@@ -11,8 +11,15 @@ export const useConsultationService = () => {
     })
   }
 
+  const getAvailableDaysByProfessional = (professionalId: string) => {
+    return useApiFetch<any>(`/professionals/${professionalId}/available-days`, {
+      method: 'GET',
+    })
+  }
+
   return {
     getConsultations,
     getProfessionalsByService,
+    getAvailableDaysByProfessional,
   }
 }

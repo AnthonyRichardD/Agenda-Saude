@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { CalendarDate, type DateValue } from '@internationalized/date'
+import { useConsultationService } from '~/services/useConsultationService'
 import moment from 'moment'
 
-const useScheduling = useSchedulingStore()
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
@@ -13,6 +13,7 @@ const schema = z.object({
 })
 
 type Schema = z.output<typeof schema>
+const useScheduling = useSchedulingStore()
 
 const selectedDate = ref<DateValue | undefined>()
 const state = reactive<Partial<Schema>>({
@@ -33,34 +34,21 @@ watch(selectedDate, () => {
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   useScheduling.formData.date = event.data.date
+  console.log('data depois do passo 3', useScheduling.formData)
   useScheduling.nextStep()
 }
 
-const availableDatesFromApi = ref([
-  '2025-08-11',
-  '2025-08-12',
-  '2025-08-13',
-  '2025-08-14',
-  '2025-08-15',
-  '2025-08-18',
-  '2025-08-22',
-  '2025-09-01',
-  '2025-09-02',
-  '2025-09-10',
-  '2025-12-09',
-])
-
-const availableDatesSet = computed(() => new Set(availableDatesFromApi.value))
+const availableDatesSet = computed(() => new Set(useScheduling.availableDates))
 
 const minDate = computed(() => {
-  if (availableDatesFromApi.value.length === 0) return new Date()
-  const sortedDates = [...availableDatesFromApi.value].sort()
+  if (useScheduling.availableDates.length === 0) return new Date()
+  const sortedDates = [...useScheduling.availableDates].sort()
   return new Date(sortedDates[0] + 'T00:00:00')
 })
 
 const maxDate = computed(() => {
-  if (availableDatesFromApi.value.length === 0) return undefined
-  const sortedDates = [...availableDatesFromApi.value].sort()
+  if (useScheduling.availableDates.length === 0) return undefined
+  const sortedDates = [...useScheduling.availableDates].sort()
   return new Date(sortedDates[sortedDates.length - 1] + 'T00:00:00')
 })
 
@@ -74,7 +62,21 @@ const isDateAvailable = (day: DateValue): boolean => {
   return availableDatesSet.value.has(dateString)
 }
 
-onMounted(() => {
+const consultationService = useConsultationService()
+const getAvailableDays = async (professionalId: string) => {
+  const { data, error } =
+    await consultationService.getAvailableDaysByProfessional(professionalId)
+
+  if (error.value) {
+    console.error('Erro ao buscar serviços:', error.value.message)
+  }
+
+  if (data.value) {
+    useScheduling.availableDates = data.value
+  }
+}
+
+onMounted(async () => {
   if (useScheduling.formData.date) {
     selectedDate.value = new CalendarDate(
       Number(moment(useScheduling.formData.date).format('YYYY')),
@@ -82,6 +84,7 @@ onMounted(() => {
       Number(moment(useScheduling.formData.date).format('DD'))
     )
   }
+  await getAvailableDays(useScheduling.formData.doctor)
 })
 </script>
 
