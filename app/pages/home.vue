@@ -7,6 +7,7 @@ import {
   Phone,
   Syringe,
 } from 'lucide-vue-next'
+import { useConsultationService } from '~/services/useConsultationService'
 
 definePageMeta({
   middleware: ['auth'],
@@ -14,6 +15,33 @@ definePageMeta({
 
 const auth = useAuthStore()
 const user = ref(auth.getUser())
+
+const nextConsultations = ref([])
+
+const consultationService = useConsultationService()
+const useLoading = useLoadingStore()
+
+const getConsultations = async () => {
+  useLoading.loading = true
+  try {
+    const { data, error } =
+      await consultationService.getNextConsultations('upcoming')
+
+    if (error.value) {
+      console.error('Erro ao buscar serviços:', error.value.message)
+    }
+
+    if (data.value && !data.value.is_error) {
+      nextConsultations.value = data.value
+    }
+  } catch (error) {
+    console.error('Erro ao buscar serviços:', error)
+  } finally {
+    useLoading.loading = false
+  }
+}
+
+await getConsultations()
 </script>
 
 <template>
@@ -34,21 +62,44 @@ const user = ref(auth.getUser())
       ></div>
     </div>
 
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row items-center justify-between">
       <h1 class="text-[#042F2E] font-semibold text-[22px]">
         Proximas Consultas
       </h1>
       <button
         type="button"
         @click="navigateTo('/agendamento/consulta')"
-        class="flex flex-row items-center justify-center gap-2 w-[140px] h-[40px] text-white bg-[#0D9488] rounded-[10px] hover:bg-[#0F766E] active:bg-[#115E59] active:scale-95 transition-all duration-150 ease-in-out"
+        class="flex flex-row items-center justify-center gap-2 h-[40px] px-2 text-white bg-[#0D9488] rounded-[10px] hover:bg-[#0F766E] active:bg-[#115E59] active:scale-95 transition-all duration-150 ease-in-out"
       >
         <Plus />
         Agendar
       </button>
     </div>
 
-    <CustomCard />
+    <UCarousel
+      v-if="nextConsultations.length > 0"
+      :items="nextConsultations"
+      :ui="{
+        item: 'basis-full',
+        container: 'rounded-lg',
+      }"
+      loop
+      :autoplay="{ delay: 8000 }"
+      wheel-gestures
+      class="w-full"
+    >
+      <template #default="{ item }">
+        <CustomCard :data="item" />
+      </template>
+    </UCarousel>
+
+    <UCard v-else>
+      <div class="text-center p-4">
+        <p class="font-medium text-[#0F766E]">
+          Você não possui nenhuma consulta agendada.
+        </p>
+      </div>
+    </UCard>
 
     <h1 class="text-[#042F2E] font-semibold text-[22px]">Acesso Rápido</h1>
     <UCard
