@@ -34,6 +34,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  isDisabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -66,6 +70,7 @@ const inputType = computed(() => {
 
     <div class="relative">
       <input
+        :disabled="props.isDisabled"
         :name="props.name"
         v-maska="mask"
         v-model="internalValue"
@@ -76,6 +81,7 @@ const inputType = computed(() => {
           'border-[#EF4444]': props.error,
           'border-[#99F6E4] focus:border-teal-500': !props.error,
           'pr-10': props.type === 'password',
+          '!text-[#115E5980]': props.isDisabled,
         }"
       />
 
