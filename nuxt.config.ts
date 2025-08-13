@@ -27,8 +27,8 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   runtimeConfig: {
     public: {
-      // apiBase: 'http://localhost:5001/api',
-      apiBase: 'http://186.208.11.106:5001/api',
+      apiBase: 'http://localhost:5001/api',
+      // apiBase: 'http://186.208.11.106:5001/api',
     },
   },
 })

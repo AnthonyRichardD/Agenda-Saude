@@ -1,19 +1,48 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: ['auth'],
-})
-const count = ref(0)
+import IconLogo from '~/assets/icons/logo.svg?component'
 </script>
 
 <template>
-  <p>Home pageas</p>
-  <button @click="count++">count is: {{ count }}</button>
+  <div
+    class="flex flex-col justify-between h-full items-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8"
+  >
+    <div class="flex flex-col items-center">
+      <div
+        class="bg-[#F5F5F599] rounded-[20px] w-[100px] h-[100px] flex items-center justify-center shadow-md shadow-[#CCFBF1]"
+      >
+        <IconLogo class="mr-[-3px]" width="70px" />
+      </div>
+      <h1 class="text-[#042F2E] font-semibold text-[40px]">Agenda Saúde</h1>
+      <p class="text-[#0F766E] text-[17px] font-medium text-center">
+        Cuidando da sua saúde com praticidade
+      </p>
+    </div>
 
-  <div>
-    <UButton label="Botão de Teste" />
-
-    <div class="p-8 mt-4 text-white bg-red-500 rounded-lg">
-      Este bloco deveria ter um fundo vermelhawo.
+    <div class="flex flex-col gap-4 w-full pr-4">
+      <NuxtLink to="/login">
+        <button
+          class="bg-[#134E4A] text-white font-extrabold text-[16px] w-full h-[50px] active:scale-95 rounded-[15px] transition-colors duration-150 ease-in-out"
+        >
+          Entrar
+        </button>
+      </NuxtLink>
+      <NuxtLink to="/cadastro">
+        <button
+          class="bg-[#CCFBF1] text-[#0F766E] border-2 border-[#134E4A] font-extrabold text-[16px] w-full h-[50px] active:scale-95 rounded-[15px] transition-colors duration-150 ease-in-out"
+        >
+          Criar Conta
+        </button>
+      </NuxtLink>
+      <div class="mt-7">
+        <p class="text-[#115E59] text-[15px] font-medium text-center">
+          Ao continuar, você concorda com nossos
+          <NuxtLink class="font-bold underline">Termos de Uso</NuxtLink>
+          e
+          <NuxtLink class="font-bold underline"
+            >Política de Privacidade</NuxtLink
+          >
+        </p>
+      </div>
     </div>
   </div>
 </template>

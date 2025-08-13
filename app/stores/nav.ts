@@ -1,5 +1,6 @@
 export const useNavStore = defineStore('nav', () => {
   const disabledRoutes = ref([
+    '/inicio',
     '/login',
     '/cadastro',
     '/recuperar-senha',
