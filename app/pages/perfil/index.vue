@@ -46,7 +46,7 @@ const handleFetchUser = async (data: IAuthUser) => {
 
       <div class="w-full bg-[#FCFFFE] rounded-[15px] border-2 border-[#CCFBF1]">
         <NuxtLink
-          to="/enderecos"
+          to="/perfil/enderecos"
           class="flex justify-start items-center gap-2 w-full py-2 px-5 cursor-pointer"
         >
           <LucideMapPin :size="24" color="#042F2E" />

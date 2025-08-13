@@ -57,7 +57,7 @@ await getMyAddresses()
   <div class="w-full bg-[#EAFDF9] min-h-full p-[20px]">
     <UIHeaderBack title="Meus Enderecos" link="/perfil">
       <button
-        @click="navigateTo('/enderecos/novo')"
+        @click="navigateTo('/perfil/enderecos/novo')"
         type="button"
         class="flex items-center gap-2 bg-[#0D9488] text-white font-bold text-[18px] py-1 px-2 rounded-[10px]"
       >

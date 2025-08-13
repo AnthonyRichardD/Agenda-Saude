@@ -25,7 +25,7 @@ const handleSubmit = async (data: ICreateAddress) => {
 
     if (data.value && !data.value.is_error) {
       useAlert.showAlert('Sucesso', 'Endereço criado com sucesso.', 'success')
-      navigateTo('/enderecos')
+      navigateTo('/perfil/enderecos')
     }
   } catch (error) {
     useAlert.showAlert(
@@ -41,7 +41,7 @@ const handleSubmit = async (data: ICreateAddress) => {
 
 <template>
   <div class="w-full bg-[#EAFDF9] min-h-full p-[20px]">
-    <UIHeaderBack title="Novo Endereço" link="/enderecos" />
+    <UIHeaderBack title="Novo Endereço" link="/perfil/enderecos" />
 
     <EnderecoForm type="create" @form-submited="handleSubmit" />
   </div>

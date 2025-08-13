@@ -40,7 +40,7 @@ const handleSubmit = async (data: ICreateAddress) => {
         'Endereço atualizado com sucesso.',
         'success'
       )
-      navigateTo('/enderecos')
+      navigateTo('/perfil/enderecos')
       address.value = undefined
     }
   } catch (error) {
@@ -57,7 +57,7 @@ const handleSubmit = async (data: ICreateAddress) => {
 
 <template>
   <div class="w-full bg-[#EAFDF9] min-h-full p-[20px]">
-    <UIHeaderBack title="Editar Endereço" link="/enderecos" />
+    <UIHeaderBack title="Editar Endereço" link="/perfil/enderecos" />
 
     <EnderecoForm type="update" @form-submited="handleSubmit" />
   </div>

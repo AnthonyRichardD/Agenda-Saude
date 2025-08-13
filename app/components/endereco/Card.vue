@@ -97,7 +97,7 @@ const handleDeleteAddress = async () => {
           @click="
             () => {
               useAddress.address = props.data
-              navigateTo('/enderecos/editar')
+              navigateTo('/perfil/enderecos/editar')
             }
           "
           class="cursor-pointer"
