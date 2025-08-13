@@ -5,9 +5,14 @@ import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
 import { Shield } from 'lucide-vue-next'
+import { useRecoverService } from '~/services/useRecoverService'
+import { useRouter } from 'vue-router'
 
 const { remainingTime, startTimer, updateRemainingTime } = useTimerPage()
 const toast = useToast()
+
+const router = useRouter()
+const { verifyCode } = useRecoverService()
 
 const canResend = computed(() => remainingTime.value <= 0)
 const displayTime = ref('05:00')
@@ -38,10 +43,35 @@ onBeforeUnmount(() => {
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  toast.add({
-    title: 'Sucesso!',
-    description: 'Código verificado com sucesso.',
-  })
+  if (!isFormValid.value) return
+
+  try {
+    const response = await verifyCode(state.code!)
+    const token = response.data?.value?.tempToken
+
+    if (!token) throw new Error('Token não encontrado')
+
+    const tempToken = useCookie('auth_token', {
+      maxAge: 600,
+      sameSite: 'strict',
+      secure: true,
+    })
+    tempToken.value = token
+
+    toast.add({
+      title: 'Sucesso!',
+      description: 'Código verificado com sucesso.',
+      color: 'success',
+    })
+
+    router.push('/recuperar-senha-nova')
+  } catch (err) {
+    toast.add({
+      title: 'Erro',
+      description: 'Código inválido ou expirado.',
+      color: 'error',
+    })
+  }
 }
 
 async function resendCode() {

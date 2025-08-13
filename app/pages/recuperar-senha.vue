@@ -4,6 +4,9 @@ import * as z from 'zod'
 import CustomInput from '~/components/CustomInput.vue'
 import { Mail } from 'lucide-vue-next'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useRecoverService } from '~/services/useRecoverService'
+
+const { requestRecoverEmail } = useRecoverService()
 
 const schema = z.object({
   email: z.email('Email inválido'),
@@ -29,15 +32,25 @@ const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!isFormValid.value) return
 
-  startTimer()
+  try {
+    await requestRecoverEmail(state.email!)
 
-  toast.add({
-    title: 'Sucesso!',
-    description: 'Código enviado para seu e-mail.',
-    color: 'success',
-  })
+    startTimer()
 
-  router.push('/recuperar-senha-code')
+    toast.add({
+      title: 'Sucesso!',
+      description: 'Código enviado para seu e-mail.',
+      color: 'success',
+    })
+
+    router.push('/recuperar-senha-code')
+  } catch (err) {
+    toast.add({
+      title: 'Erro',
+      description: 'Não foi possível enviar o código.',
+      color: 'error',
+    })
+  }
 }
 </script>
 
