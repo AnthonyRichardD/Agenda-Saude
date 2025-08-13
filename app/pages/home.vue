@@ -2,8 +2,6 @@
 import {
   Pill,
   Plus,
-  Calendar,
-  Clock,
   CalendarPlus,
   FileText,
   Phone,
