@@ -107,6 +107,7 @@ await getConsultations()
     >
       <div class="flex flex-row justify-center gap-4 w-full">
         <NuxtLink
+          to="/agendamento/consulta"
           class="group flex flex-col items-center justify-center gap-1 w-[120px]"
         >
           <div
@@ -173,8 +174,9 @@ await getConsultations()
         </h1>
       </div>
       <div class="flex items-start mt-2">
-        <p class="text-[#0F766E] text-[14px] font-medium text-center">
-          Mussum Ipsum
+        <p class="text-[#0F766E] text-[14px] font-medium text-start">
+          Não esqueça de tomar sua vacina anual <br />contra a gripe. <br />
+          Disponivel em todas as UBS.
         </p>
       </div>
     </UCard>

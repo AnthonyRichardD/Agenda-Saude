@@ -33,7 +33,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const { data, error } = await login(payload)
 
     if (error.value) {
-      alert(error.value)
       const errorMessage =
         error.value.data?.message || 'Ocorreu um erro ao entrar na conta.'
       alertStore.showAlert('Erro no login', errorMessage, 'error')
