@@ -18,6 +18,7 @@ import { Home, Bell, Calendar, User } from 'lucide-vue-next'
 
       <div class="flex-1 h-full">
         <NuxtLink
+          to="/consultas"
           class="flex flex-col justify-center items-center h-full w-full text-[#0F766E] hover:text-[#115E59] active:text-[#0D4F47] hover:bg-[#99f6e4] active:bg-[#5eead4] transition-all duration-200"
         >
           <Calendar :size="20" />

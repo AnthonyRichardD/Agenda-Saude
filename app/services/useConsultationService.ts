@@ -39,11 +39,18 @@ export const useConsultationService = () => {
     })
   }
 
+  const getNextConsultations = (path: 'upcoming' | 'history') => {
+    return useApiFetch<any>(`/appointments/${path}`, {
+      method: 'GET',
+    })
+  }
+
   return {
     getConsultations,
     getProfessionalsByService,
     getAvailableDaysByProfessional,
     getAvailableSlotByProfessional,
     createConsultation,
+    getNextConsultations,
   }
 }
