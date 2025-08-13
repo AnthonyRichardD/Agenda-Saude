@@ -4,6 +4,13 @@ import * as z from 'zod'
 import { LockKeyhole } from 'lucide-vue-next'
 import CustomInput from '~/components/CustomInput.vue'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { useRecoverService } from '~/services/useRecoverService'
+
+definePageMeta({
+  middleware: ['auth'],
+})
+
+const { resetPassword } = useRecoverService()
 
 const schema = z
   .object({
@@ -43,15 +50,31 @@ const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!isFormValid.value) return
 
-  startTimer()
+  try {
+    const tempToken = useCookie('auth_token')
 
-  toast.add({
-    title: 'Sucesso!',
-    description: 'Código enviado para seu e-mail.',
-    color: 'success',
-  })
+    if (!tempToken.value) {
+      throw new Error('Token ausente ou expirado')
+    }
 
-  router.push('/recuperar-senha-code')
+    await resetPassword(state.password!, tempToken.value)
+
+    tempToken.value = null
+
+    toast.add({
+      title: 'Sucesso!',
+      description: 'Senha alterada com sucesso.',
+      color: 'success',
+    })
+
+    router.push('/login')
+  } catch (err) {
+    toast.add({
+      title: 'Erro',
+      description: 'Não foi possível redefinir a senha.',
+      color: 'error',
+    })
+  }
 }
 </script>
 
