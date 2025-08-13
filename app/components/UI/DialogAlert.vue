@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const alertStore = useAlertStore()
-const { title, message } = storeToRefs(alertStore)
+const { title, message, type } = storeToRefs(alertStore)
 
 const close = (): void => {
   alertStore.hideAlert()
@@ -11,6 +11,15 @@ onMounted(() => {
     alertStore.hideAlert()
   }, 5000)
 })
+
+const getCloseButtonColor = (): string => {
+  switch (type.value) {
+    case 'error':
+      return '#EF4444'
+    default:
+      return '#000000'
+  }
+}
 </script>
 
 <template>
@@ -21,20 +30,41 @@ onMounted(() => {
       <div class="max-w-md w-full p-4">
         <div
           @click.stop
-          class="bg-[#fee2e2] rounded-[10px] p-4 flex gap-3 items-start relative pointer-events-auto"
+          class="rounded-[10px] p-4 flex gap-3 items-start relative pointer-events-auto shadow-lg"
+          :class="{
+            'bg-[#fee2e2]': type === 'error',
+            'bg-white': type === 'success',
+          }"
         >
           <LucideX
             :size="20"
-            color="#EF4444"
+            :color="getCloseButtonColor()"
             @click="close"
             class="absolute top-3 right-3 cursor-pointer"
           />
-          <LucideAlertCircle class="mt-[2px]" color="#B91C1C" :size="18" />
-          <div class="flex flex-col text-[#B91C1C] items-start">
+          <LucideAlertCircle
+            v-if="type === 'error'"
+            class="mt-[2px]"
+            color="#B91C1C"
+            :size="18"
+          />
+          <LucideCheckCircle
+            v-if="type === 'success'"
+            class="mt-[2px]"
+            color="#0D9488"
+            :size="18"
+          />
+          <div
+            :class="{
+              'text-[#B91C1C]': type === 'error',
+              'text-[#0D9488]': type === 'success',
+            }"
+            class="flex flex-col items-start"
+          >
             <h3 class="font-semibold text-[15px]">
               {{ title }}
             </h3>
-            <p class="text-[#B91C1C] text-[13px]">
+            <p class="text-[13px]">
               {{ message }}
             </p>
           </div>
