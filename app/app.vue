@@ -3,7 +3,11 @@ const alertStore = useAlertStore()
 const { isOpen } = storeToRefs(alertStore)
 
 const useNavMenu = useNavStore()
-const { navIsActive } = storeToRefs(useNavMenu)
+const { disabledRoutes } = storeToRefs(useNavMenu)
+const router = useRouter()
+const navIsActive = computed(() => {
+  return !disabledRoutes.value.includes(router.currentRoute.value.path)
+})
 </script>
 
 <template>

@@ -1,5 +1,11 @@
 export const useNavStore = defineStore('nav', () => {
-  const navIsActive = ref(true)
+  const disabledRoutes = ref([
+    '/login',
+    '/cadastro',
+    '/recuperar-senha',
+    '/recuperar-senha-code',
+    '/recuperar-senha-nova',
+  ])
 
-  return { navIsActive }
+  return { disabledRoutes }
 })
