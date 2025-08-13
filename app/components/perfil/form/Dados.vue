@@ -2,6 +2,14 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { usePatientService } from '~/services/usePatientService'
+import moment from 'moment'
+
+const props = defineProps({
+  patient: {
+    type: Object,
+    required: true,
+  },
+})
 
 const birthDateSchema = z
   .string()
@@ -62,22 +70,18 @@ const schema = z.object({
   birth_date: birthDateSchema,
 })
 
-const userData = reactive({
-  full_name: 'Anthony Richard da Silva Martins',
-  email: 'thony.punk@gmail.com',
-  phone: '81989589709',
-  birth_date: '09/12/2003',
-})
-
 type Schema = z.output<typeof schema>
 
+const userData = await ref(props.patient)
+
 const state = reactive<Partial<Schema>>({
-  full_name: userData.full_name ?? '',
-  email: userData.email ?? '',
-  phone: userData.phone ?? '',
-  birth_date: userData.birth_date ?? '',
+  full_name: userData.value.full_name ?? '',
+  email: userData.value.email ?? '',
+  phone: userData.value.phone ?? '',
+  birth_date: moment(userData.value.birth_date).format('DD/MM/YYYY') ?? '',
 })
 
+const emit = defineEmits(['updateUserData'])
 const useLoading = useLoadingStore()
 const patientService = usePatientService()
 const formIsSuccess = ref(false)
@@ -108,6 +112,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         'success'
       )
       formIsSuccess.value = true
+      emit('updateUserData', payload)
     }
   } catch (error) {
     console.error(error)
@@ -123,8 +128,8 @@ const isFormDisabled = ref(true)
 const useAlert = useAlertStore()
 watch(isFormDisabled, (newValue) => {
   if (newValue == true && formIsSuccess.value == false) {
-    state.full_name = userData.full_name ?? ''
-    state.email = userData.email ?? ''
+    state.full_name = userData.value.full_name ?? ''
+    state.email = userData.value.email ?? ''
     form.value?.validate()
   }
 

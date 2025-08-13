@@ -1,10 +1,30 @@
 <script setup lang="ts">
+import { usePatientService } from '~/services/usePatientService'
+
 definePageMeta({
   middleware: ['auth'],
 })
-
 const auth = useAuthStore()
 const user = ref(auth.getUser())
+
+const patientService = usePatientService()
+const getPatient = async () => {
+  const { data, error } = await patientService.showMe()
+
+  if (error.value) {
+    console.error(error.value.message)
+    return
+  }
+  if (data.value) {
+    user.value = data.value
+  }
+}
+
+await getPatient()
+
+const handleFetchUser = async (data: IAuthUser) => {
+  user.value = data
+}
 </script>
 
 <template>
@@ -16,11 +36,11 @@ const user = ref(auth.getUser())
         {{ user?.full_name }}
       </h1>
       <p class="text-[#3F3F46CC] text-[14px] font-medium mb-4">
-        {{ formatCpf(user?.cpf) }}
+        {{ formatCpf(auth.getUser().cpf) }}
       </p>
     </div>
     <div class="w-full space-y-[26px]">
-      <PerfilFormDados />
+      <PerfilFormDados @update-user-data="handleFetchUser" :patient="user" />
 
       <PerfilFormNotification />
 

@@ -14,7 +14,14 @@ export const usePatientService = () => {
     })
   }
 
+  const showMe = async () => {
+    return useApiFetch<any>('/patient/me', {
+      method: 'GET',
+    })
+  }
+
   return {
+    showMe,
     updatePatient,
   }
 }
