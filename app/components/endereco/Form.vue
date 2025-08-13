@@ -147,17 +147,20 @@ onUnmounted(() => {
         </UFormField>
       </div>
 
-      <div class="flex items-end gap-5 justify-between mt-9">
+      <div
+        class="flex flex-col items-end gap-5 justify-between mt-9 min-[384px]:flex-row"
+      >
         <button
           type="submit"
-          class="bg-[#042F2E] font-medium text-white w-full text-[14px] p-3 rounded-[10px] border-2 border-[#042F2E] cursor-pointer"
+          class="bg-[#042F2E] font-medium text-white w-full text-[12px] min-[423px]:text-[14px] p-3 rounded-[10px] border-2 border-[#042F2E] cursor-pointer"
         >
           {{ type === 'create' ? 'Adicionar Endereço' : 'Salvar Alterações' }}
         </button>
 
         <button
+          @click.prevent="navigateTo('/perfil/enderecos')"
           type="button"
-          class="border-2 border-[#99F6E4] font-medium w-full text-[#3F3F46] text-[14px] p-3 rounded-[10px] cursor-pointer"
+          class="border-2 border-[#99F6E4] font-medium w-full text-[#3F3F46] text-[12px] min-[423px]:text-[14px] p-3 rounded-[10px] cursor-pointer"
         >
           Cancelar
         </button>

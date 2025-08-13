@@ -4,7 +4,7 @@ import { Home, Bell, Calendar, User } from 'lucide-vue-next'
 
 <template>
   <nav
-    class="fixed bottom-0 left-0 right-0 z-50 bg-[#CCFBF1] border-t border-gray-200 shadow-md"
+    class="fixed bottom-0 left-0 right-0 z-50 max-w-md mx-auto bg-[#CCFBF1] border-t border-gray-200"
   >
     <div class="flex justify-around items-center h-[60px]">
       <div class="flex-1 h-full">

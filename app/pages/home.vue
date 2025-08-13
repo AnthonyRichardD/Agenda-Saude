@@ -127,6 +127,5 @@ const user = ref(auth.getUser())
         </p>
       </div>
     </UCard>
-    <NavMenu />
   </div>
 </template>

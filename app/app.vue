@@ -1,6 +1,9 @@
 <script setup>
 const alertStore = useAlertStore()
 const { isOpen } = storeToRefs(alertStore)
+
+const useNavMenu = useNavStore()
+const { navIsActive } = storeToRefs(useNavMenu)
 </script>
 
 <template>
@@ -9,7 +12,9 @@ const { isOpen } = storeToRefs(alertStore)
       <UILoading />
       <UIDialogAlert v-if="isOpen" />
       <UApp>
-        <NuxtPage />
+        <NuxtPage :class="{ 'pb-[70px]': navIsActive }" />
+
+        <NavMenu v-if="navIsActive" />
       </UApp>
     </main>
   </div>

@@ -33,6 +33,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const { data, error } = await login(payload)
 
     if (error.value) {
+      alert(error.value)
       const errorMessage =
         error.value.data?.message || 'Ocorreu um erro ao entrar na conta.'
       alertStore.showAlert('Erro no login', errorMessage, 'error')
@@ -62,8 +63,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
-    <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
+  <div
+    class="flex justify-center h-full items-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8"
+  >
+    <UCard
+      class="w-full h-fit rounded-[15px] max-w-2xl border-2 border-[#CCFBF1]"
+    >
       <UForm
         :schema="schema"
         :state="state"
