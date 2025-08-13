@@ -45,15 +45,15 @@ const handleFetchUser = async (data: IAuthUser) => {
       <PerfilFormNotification />
 
       <div class="w-full bg-[#FCFFFE] rounded-[15px] border-2 border-[#CCFBF1]">
-        <button
+        <NuxtLink
+          to="/enderecos"
           class="flex justify-start items-center gap-2 w-full py-2 px-5 cursor-pointer"
-          type="button"
         >
           <LucideMapPin :size="24" color="#042F2E" />
           <span class="text-[#042F2E] text-[16px] font-medium">
             Meus Endereços
           </span>
-        </button>
+        </NuxtLink>
         <button
           class="flex justify-start items-center gap-2 border w-full py-2 px-5 cursor-pointer border-y border-x-0 border-[#99F6E4]"
           type="button"
