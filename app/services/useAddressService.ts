@@ -32,6 +32,18 @@ export const useAddressService = () => {
       body: data,
     })
   }
+  const updateAddress = async (data: ICreateAddress, addressId: number) => {
+    return useApiFetch(`/address/update/${addressId}`, {
+      method: 'PATCH',
+      body: data,
+    })
+  }
+
+  const deleteAddress = async (addressId: number) => {
+    return useApiFetch(`/address/delete/${addressId}`, {
+      method: 'DELETE',
+    })
+  }
 
   const getAddresses = async () => {
     return useApiFetch<any>('/address/list', {
@@ -48,5 +60,7 @@ export const useAddressService = () => {
     createAddress,
     getAddresses,
     setPrimary,
+    updateAddress,
+    deleteAddress,
   }
 }

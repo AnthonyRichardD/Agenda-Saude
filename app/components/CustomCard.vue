@@ -8,8 +8,6 @@ const props = defineProps({
   },
 })
 
-console.log(props.data)
-
 const formattedDate = computed(() => {
   if (!props.data.slot?.start_time) return ''
   const date = new Date(props.data.slot?.start_time)

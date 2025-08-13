@@ -27,21 +27,29 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>
 
+const useAddress = useAddressStore()
+
+const { address } = storeToRefs(useAddress)
+
 const state = reactive<Partial<Schema>>({
-  address_name: '',
-  zip_code: '',
-  street: '',
-  neighborhood: '',
-  number: '',
-  complement: '',
-  city: '',
-  state: '',
+  address_name: address.value ? address.value.address_name : '',
+  zip_code: address.value ? address.value.zip_code : '',
+  street: address.value ? address.value.street : '',
+  neighborhood: address.value ? address.value.neighborhood : '',
+  number: address.value ? address.value.number : '',
+  complement: address.value ? address.value.complement : '',
+  city: address.value ? address.value.city : '',
+  state: address.value ? address.value.state : '',
 })
 
 const emit = defineEmits(['formSubmited'])
 const onSubmit = (event: FormSubmitEvent<Schema>) => {
   emit('formSubmited', event.data)
 }
+
+onUnmounted(() => {
+  address.value = undefined
+})
 </script>
 
 <template>

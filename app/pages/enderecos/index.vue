@@ -45,12 +45,17 @@ const handlePrimaryChange = (updatedAddressId: number) => {
     }
   }
 }
+
+const handleDeleteAddress = (addressId: number) => {
+  myAddresses.value = myAddresses.value.filter((addr) => addr.id !== addressId)
+}
+
 await getMyAddresses()
 </script>
 
 <template>
   <div class="w-full bg-[#EAFDF9] min-h-full p-[20px]">
-    <UIHeaderBack title="Meus Enderecos" link="/home">
+    <UIHeaderBack title="Meus Enderecos" link="/perfil">
       <button
         @click="navigateTo('/enderecos/novo')"
         type="button"
@@ -64,6 +69,7 @@ await getMyAddresses()
     <div class="w-full flex flex-col items-center justify-center gap-3.5">
       <EnderecoCard
         @defined-as-primary="handlePrimaryChange"
+        @delete-address="handleDeleteAddress"
         v-for="address in myAddresses"
         :key="address.id"
         :data="address"
