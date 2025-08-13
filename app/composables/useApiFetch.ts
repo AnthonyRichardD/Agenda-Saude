@@ -1,5 +1,6 @@
 export function useApiFetch<T>(url, options = {}) {
   const config = useRuntimeConfig()
+  const auth = useAuthStore()
 
   const defaults = {
     baseURL: config.public.apiBase,
@@ -15,7 +16,7 @@ export function useApiFetch<T>(url, options = {}) {
 
     onResponseError({ response }) {
       if (response.status === 401) {
-        console.log('Lógica para lidar com token expirado...')
+        auth.logout()
       }
     },
   }
