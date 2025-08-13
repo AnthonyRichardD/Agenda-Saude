@@ -90,74 +90,77 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
-    <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
-            <LockKeyhole :size="42" stroke-width="1" color="#F0F4F4" />
-          </div>
-          <h1 class="text-[#042F2E] font-semibold text-[22px]">
-            Criar nova Senha
-          </h1>
-          <p class="text-[#0F766E] text-[14px] font-medium text-center">
-            Digite sua nova senha para a conta <br />
-            Email
-          </p>
-        </div>
-
-        <UFormField name="password" v-slot="{ error }">
-          <CustomInput
-            label="Nova Senha"
-            v-model="state.password"
-            type="password"
-            placeholder="Digite sua nova Senha"
-            :error="!!error"
-          />
-        </UFormField>
-
-        <UFormField name="password_confirmation" v-slot="{ error }">
-          <CustomInput
-            label="Confirme sua Senha"
-            v-model="state.password_confirmation"
-            type="password"
-            placeholder="Confirme sua nova Senha"
-            :error="!!error"
-          />
-        </UFormField>
-
-        <button
-          type="submit"
-          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
-          :class="
-            isFormValid
-              ? 'bg-[#134E4A] text-white'
-              : 'bg-[#134E4AB2] text-[#ffffff70]'
-          "
-          :disabled="!isFormValid"
+  <div class="flex flex-col w-full h-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
+    <UIHeaderBack title="Nova senha" link="/recuperar-senha-code" />
+    <div class="flex items-center justify-center h-full">
+      <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
         >
-          Redefinir Senha
-        </button>
+          <div class="flex flex-col items-center gap-1">
+            <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+              <LockKeyhole :size="42" stroke-width="1" color="#F0F4F4" />
+            </div>
+            <h1 class="text-[#042F2E] font-semibold text-[22px]">
+              Criar nova Senha
+            </h1>
+            <p class="text-[#0F766E] text-[14px] font-medium text-center">
+              Digite sua nova senha para a conta <br />
+              Email
+            </p>
+          </div>
 
-        <UCard class="bg-[#D8E9FF80] w-full h-fit rounded-[15px] max-w-2xl">
-          <h1 class="text-[#20488F] font-normal text-[14px]">
-            Requisitos da Nova Senha
-          </h1>
-          <ul
-            class="flex flex-col items-start ml-4 text-[#1A4592E5] text-[12px] font-normal text-start list-disc"
+          <UFormField name="password" v-slot="{ error }">
+            <CustomInput
+              label="Nova Senha"
+              v-model="state.password"
+              type="password"
+              placeholder="Digite sua nova Senha"
+              :error="!!error"
+            />
+          </UFormField>
+
+          <UFormField name="password_confirmation" v-slot="{ error }">
+            <CustomInput
+              label="Confirme sua Senha"
+              v-model="state.password_confirmation"
+              type="password"
+              placeholder="Confirme sua nova Senha"
+              :error="!!error"
+            />
+          </UFormField>
+
+          <button
+            type="submit"
+            class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
+            :class="
+              isFormValid
+                ? 'bg-[#134E4A] text-white'
+                : 'bg-[#134E4AB2] text-[#ffffff70]'
+            "
+            :disabled="!isFormValid"
           >
-            <li>Pelo menos 8 caracteres</li>
-            <li>Uma letra maiúscula</li>
-            <li>Uma letra minúscula</li>
-            <li>Um caracter especial</li>
-          </ul>
-        </UCard>
-      </UForm>
-    </UCard>
+            Redefinir Senha
+          </button>
+
+          <UCard class="bg-[#D8E9FF80] w-full h-fit rounded-[15px] max-w-2xl">
+            <h1 class="text-[#20488F] font-normal text-[14px]">
+              Requisitos da Nova Senha
+            </h1>
+            <ul
+              class="flex flex-col items-start ml-4 text-[#1A4592E5] text-[12px] font-normal text-start list-disc"
+            >
+              <li>Pelo menos 8 caracteres</li>
+              <li>Uma letra maiúscula</li>
+              <li>Uma letra minúscula</li>
+              <li>Um caracter especial</li>
+            </ul>
+          </UCard>
+        </UForm>
+      </UCard>
+    </div>
   </div>
 </template>

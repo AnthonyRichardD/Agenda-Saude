@@ -113,72 +113,75 @@ const isFormValid = computed(() => {
 </script>
 
 <template>
-  <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
-    <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
-            <Shield :size="42" stroke-width="1" color="#F0F4F4" />
+  <div class="flex flex-col w-full h-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
+    <UIHeaderBack title="Código de Verificação" link="/recuperar-senha" />
+    <div class="flex items-center justify-center h-full">
+      <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
+        >
+          <div class="flex flex-col items-center gap-1">
+            <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+              <Shield :size="42" stroke-width="1" color="#F0F4F4" />
+            </div>
+            <h1 class="text-[#042F2E] font-semibold text-[22px]">
+              Digite o Código
+            </h1>
+            <p class="text-[#0F766E] text-[14px] font-medium text-center">
+              Enviamos um código de 6 digitos para <br />
+              seu email
+            </p>
           </div>
-          <h1 class="text-[#042F2E] font-semibold text-[22px]">
-            Digite o Código
-          </h1>
-          <p class="text-[#0F766E] text-[14px] font-medium text-center">
-            Enviamos um código de 6 digitos para <br />
-            seu email
-          </p>
-        </div>
 
-        <UFormField
-          label="Código de verificação"
-          name="code"
-          v-slot="{ error }"
-        >
-          <CustomInput
-            mask="######"
-            v-model="state.code"
-            placeholder="000000"
-            :error="!!error"
-          />
-        </UFormField>
+          <UFormField
+            label="Código de verificação"
+            name="code"
+            v-slot="{ error }"
+          >
+            <CustomInput
+              mask="######"
+              v-model="state.code"
+              placeholder="000000"
+              :error="!!error"
+            />
+          </UFormField>
 
-        <button
-          type="submit"
-          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
-          :class="
-            isFormValid
-              ? 'bg-[#134E4A] text-white'
-              : 'bg-[#134E4AB2] text-[#ffffff70]'
-          "
-          :disabled="!isFormValid"
-        >
-          Verificar Código
-        </button>
+          <button
+            type="submit"
+            class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
+            :class="
+              isFormValid
+                ? 'bg-[#134E4A] text-white'
+                : 'bg-[#134E4AB2] text-[#ffffff70]'
+            "
+            :disabled="!isFormValid"
+          >
+            Verificar Código
+          </button>
 
-        <div class="mt-7">
-          <p class="text-[#115E59] text-[13px] font-medium text-center">
-            Não recebeu o código?
-            <button
-              @click="resendCode"
-              :disabled="!canResend"
-              class="font-bold"
-              :class="
-                canResend
-                  ? 'text-[#134E4A] cursor-pointer'
-                  : 'text-[#134E4A70] cursor-default'
-              "
-            >
-              <span v-if="!canResend"> Reenviar em {{ displayTime }} </span>
-              <span v-else>Reenviar código</span>
-            </button>
-          </p>
-        </div>
-      </UForm>
-    </UCard>
+          <div class="mt-7">
+            <p class="text-[#115E59] text-[13px] font-medium text-center">
+              Não recebeu o código?
+              <button
+                @click="resendCode"
+                :disabled="!canResend"
+                class="font-bold"
+                :class="
+                  canResend
+                    ? 'text-[#134E4A] cursor-pointer'
+                    : 'text-[#134E4A70] cursor-default'
+                "
+              >
+                <span v-if="!canResend"> Reenviar em {{ displayTime }} </span>
+                <span v-else>Reenviar código</span>
+              </button>
+            </p>
+          </div>
+        </UForm>
+      </UCard>
+    </div>
   </div>
 </template>

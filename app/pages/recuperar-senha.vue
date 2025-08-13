@@ -61,55 +61,58 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="flex justify-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
-    <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <div class="flex flex-col items-center gap-1">
-          <div class="bg-[#0F766E] rounded-[20px] p-3.5">
-            <Mail :size="42" stroke-width="1" color="#F0F4F4" />
-          </div>
-          <h1 class="text-[#042F2E] font-semibold text-[22px]">
-            Esqueceu sua senha?
-          </h1>
-          <p class="text-[#0F766E] text-[14px] font-medium text-center">
-            Digite seu e-mail e enviaremos um <br />
-            código para redefinir sua senha
-          </p>
-        </div>
-
-        <UFormField label="Email" name="email" v-slot="{ error }">
-          <CustomInput
-            v-model="state.email"
-            placeholder="seu@email.com"
-            :error="!!error"
-          />
-        </UFormField>
-
-        <button
-          type="submit"
-          class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
-          :class="
-            isFormValid
-              ? 'bg-[#134E4A] text-white'
-              : 'bg-[#134E4AB2] text-[#ffffff70]'
-          "
-          :disabled="!isFormValid"
+  <div class="flex flex-col w-full h-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8">
+    <UIHeaderBack title="Recuperar Senha" link="/login" />
+    <div class="flex items-center justify-center h-full">
+      <UCard class="w-full h-fit rounded-[15px] max-w-2xl">
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
         >
-          Enviar Código
-        </button>
+          <div class="flex flex-col items-center gap-1">
+            <div class="bg-[#0F766E] rounded-[20px] p-3.5">
+              <Mail :size="42" stroke-width="1" color="#F0F4F4" />
+            </div>
+            <h1 class="text-[#042F2E] font-semibold text-[22px]">
+              Esqueceu sua senha?
+            </h1>
+            <p class="text-[#0F766E] text-[14px] font-medium text-center">
+              Digite seu e-mail e enviaremos um <br />
+              código para redefinir sua senha
+            </p>
+          </div>
 
-        <div class="mt-7">
-          <p class="text-[#115E59] text-[13px] font-medium text-center">
-            Lembrou da senha?
-            <NuxtLink to="/login" class="font-bold">Voltar ao login</NuxtLink>
-          </p>
-        </div>
-      </UForm>
-    </UCard>
+          <UFormField label="Email" name="email" v-slot="{ error }">
+            <CustomInput
+              v-model="state.email"
+              placeholder="seu@email.com"
+              :error="!!error"
+            />
+          </UFormField>
+
+          <button
+            type="submit"
+            class="font-extrabold text-[16px] w-full h-[50px] rounded-[15px] transition-colors duration-200"
+            :class="
+              isFormValid
+                ? 'bg-[#134E4A] text-white'
+                : 'bg-[#134E4AB2] text-[#ffffff70]'
+            "
+            :disabled="!isFormValid"
+          >
+            Enviar Código
+          </button>
+
+          <div class="mt-7">
+            <p class="text-[#115E59] text-[13px] font-medium text-center">
+              Lembrou da senha?
+              <NuxtLink to="/login" class="font-bold">Voltar ao login</NuxtLink>
+            </p>
+          </div>
+        </UForm>
+      </UCard>
+    </div>
   </div>
 </template>
