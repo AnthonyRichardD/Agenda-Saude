@@ -27,29 +27,35 @@ const isFormValid = computed(() => {
 const { startTimer } = useTimerPage()
 const router = useRouter()
 
-const toast = useToast()
-
+const useAlert = useAlertStore()
+const useLoading = useLoadingStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  useLoading.loading = true
   if (!isFormValid.value) return
 
   try {
-    await requestRecoverEmail(state.email!)
+    const { data, error } = await requestRecoverEmail(event.data.email)
 
+    if (error.value) {
+      const errorMessage =
+        error.value.data?.message || 'Ocorreu um erro ao recuperar a senha'
+      useAlert.showAlert('Erro ao recuperar senha', errorMessage, 'error')
+      return
+    }
+
+    if (data.value && !data.value.is_error) {
+      useAlert.showAlert('Sucesso', data.value.message, 'success')
+    }
     startTimer()
-
-    toast.add({
-      title: 'Sucesso!',
-      description: 'Código enviado para seu e-mail.',
-      color: 'success',
-    })
-
     router.push('/recuperar-senha-code')
   } catch (err) {
-    toast.add({
-      title: 'Erro',
-      description: 'Não foi possível enviar o código.',
-      color: 'error',
-    })
+    useAlert.showAlert(
+      'Erro',
+      'Erro interno no servidor, tente novamente mais tarde',
+      'error'
+    )
+  } finally {
+    useLoading.loading = false
   }
 }
 </script>

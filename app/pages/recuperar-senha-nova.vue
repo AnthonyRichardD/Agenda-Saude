@@ -42,38 +42,49 @@ const isFormValid = computed(() => {
   )
 })
 
-const { startTimer } = useTimerPage()
-const router = useRouter()
-
-const toast = useToast()
-
+const useAlert = useAlertStore()
+const useLoading = useLoadingStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  useLoading.loading = true
   if (!isFormValid.value) return
-
+  const payload = {
+    new_password: event.data.password,
+  }
   try {
     const tempToken = useCookie('auth_token')
 
     if (!tempToken.value) {
-      throw new Error('Token ausente ou expirado')
+      navigateTo('/login')
+    } else {
+      const { data, error } = await resetPassword(payload, tempToken.value)
+
+      if (error.value) {
+        const errorMessage =
+          error.value.data?.message || 'Ocorreu um erro ao atualizar a senha'
+        useAlert.showAlert('Erro ao atualizar senha', errorMessage, 'error')
+        return
+      }
+
+      if (data.value && !data.value.is_error) {
+        useAlert.showAlert(
+          'Sucesso',
+          'Senha atualizada com sucesso.',
+          'success'
+        )
+        tempToken.value = undefined
+        setTimeout(() => {
+          navigateTo('/login')
+          useLoading.loading = false
+        }, 500)
+      }
     }
-
-    await resetPassword(state.password!, tempToken.value)
-
-    tempToken.value = null
-
-    toast.add({
-      title: 'Sucesso!',
-      description: 'Senha alterada com sucesso.',
-      color: 'success',
-    })
-
-    router.push('/login')
   } catch (err) {
-    toast.add({
-      title: 'Erro',
-      description: 'Não foi possível redefinir a senha.',
-      color: 'error',
-    })
+    useAlert.showAlert(
+      'Erro',
+      'Erro interno no servidor, tente novamente mais tarde',
+      'error'
+    )
+    useLoading.loading = false
   }
 }
 </script>

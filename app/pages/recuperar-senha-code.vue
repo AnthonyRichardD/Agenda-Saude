@@ -6,12 +6,11 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import { useTimerPage } from '~/composables/userTimePage'
 import { Shield } from 'lucide-vue-next'
 import { useRecoverService } from '~/services/useRecoverService'
-import { useRouter } from 'vue-router'
-
-const { remainingTime, startTimer, updateRemainingTime } = useTimerPage()
-const toast = useToast()
 
 const router = useRouter()
+const queryCode = ref(router.currentRoute.value.query.code)
+
+const { remainingTime, startTimer, updateRemainingTime } = useTimerPage()
 const { verifyCode } = useRecoverService()
 
 const canResend = computed(() => remainingTime.value <= 0)
@@ -42,35 +41,54 @@ onBeforeUnmount(() => {
   if (interval) clearInterval(interval)
 })
 
+const schema = z.object({
+  code: z.string().min(6, 'O código deve ter 6 dígitos'),
+})
+
+const state = reactive({
+  code: queryCode.value ? String(queryCode.value) : '',
+})
+
+type Schema = z.infer<typeof schema>
+
+const useAlert = useAlertStore()
+const useLoading = useLoadingStore()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  useLoading.loading = true
   if (!isFormValid.value) return
-
+  const payload = {
+    code: event.data.code,
+  }
   try {
-    const response = await verifyCode(state.code!)
-    const token = response.data?.value?.tempToken
+    const { data, error } = await verifyCode(payload)
 
-    if (!token) throw new Error('Token não encontrado')
+    if (error.value) {
+      const errorMessage =
+        error.value.data?.message || 'Ocorreu um erro ao verificar o código'
+      useAlert.showAlert('Erro ao verificar código', errorMessage, 'error')
+      return
+    }
 
-    const tempToken = useCookie('auth_token', {
-      maxAge: 600,
-      sameSite: 'strict',
-      secure: true,
-    })
-    tempToken.value = token
+    if (data.value && !data.value.is_error) {
+      useAlert.showAlert('Sucesso', 'Código verificado com sucesso.', 'success')
+      const token = data?.value?.tempToken
 
-    toast.add({
-      title: 'Sucesso!',
-      description: 'Código verificado com sucesso.',
-      color: 'success',
-    })
-
-    router.push('/recuperar-senha-nova')
+      const tempToken = useCookie('auth_token', {
+        maxAge: 600,
+        sameSite: 'strict',
+        secure: true,
+      })
+      tempToken.value = token
+      navigateTo('/recuperar-senha-nova')
+    }
   } catch (err) {
-    toast.add({
-      title: 'Erro',
-      description: 'Código inválido ou expirado.',
-      color: 'error',
-    })
+    useAlert.showAlert(
+      'Erro',
+      'Erro interno no servidor, tente novamente mais tarde',
+      'error'
+    )
+  } finally {
+    useLoading.loading = false
   }
 }
 
@@ -87,14 +105,6 @@ async function resendCode() {
     }
   } catch (error) {}
 }
-
-const schema = z.object({
-  code: z.string().min(6, 'O código deve ter 6 dígitos'),
-})
-
-const state = reactive({
-  code: '',
-})
 
 const formRef = ref()
 const isFormValid = computed(() => {

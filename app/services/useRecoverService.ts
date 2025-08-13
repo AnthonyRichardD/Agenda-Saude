@@ -8,17 +8,17 @@ export const useRecoverService = () => {
     })
   }
 
-  const verifyCode = (code: string) => {
+  const verifyCode = (code: { code: string }) => {
     return useApiFetch<any>('email/verify-code', {
       method: 'POST',
-      body: { code },
+      body: code,
     })
   }
 
-  const resetPassword = (newPassword: string, token: string) => {
+  const resetPassword = (data: { new_password: string }, token: string) => {
     return useApiFetch<any>('email/reset-patient', {
       method: 'POST',
-      body: { new_password: newPassword },
+      body: data,
       headers: {
         Authorization: `Bearer ${token}`,
       },

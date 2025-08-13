@@ -86,6 +86,7 @@ const inputType = computed(() => {
       />
 
       <button
+        tabindex="-1"
         v-if="props.type === 'password'"
         type="button"
         @click="togglePasswordVisibility"

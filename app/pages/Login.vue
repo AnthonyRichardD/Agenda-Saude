@@ -35,7 +35,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     if (error.value) {
       const errorMessage =
         error.value.data?.message || 'Ocorreu um erro ao entrar na conta.'
-      alertStore.showAlert('Erro no login', errorMessage)
+      alertStore.showAlert('Erro no login', errorMessage, 'error')
 
       console.error('Erro da API:', errorMessage)
       return
@@ -106,7 +106,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <div class="flex items-center justify-between w-full gap-4">
             <UIFormCheckBox label="Lembrar de mim?" />
             <NuxtLink
-              to="/"
+              to="/recuperar-senha"
               class="text-[#115E59] text-[13px] font-bold text-center"
               >Esqueceu a senha?</NuxtLink
             >
