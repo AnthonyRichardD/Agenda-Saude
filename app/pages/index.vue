@@ -6,11 +6,11 @@ import IconLogo from '~/assets/icons/logo.svg?component'
   <div
     class="flex flex-col justify-between h-full items-center w-full min-h-dvh bg-[#EAFDF9] p-[20px] py-8"
   >
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center mt-[100px]">
       <div
-        class="bg-[#F5F5F599] rounded-[20px] w-[100px] h-[100px] flex items-center justify-center shadow-md shadow-[#CCFBF1]"
+        class="bg-[white] rounded-[30px] w-[142px] h-[142px] flex items-center justify-center shadow-2xl shadow-[#CCFBF1]"
       >
-        <IconLogo class="mr-[-3px]" width="70px" />
+        <IconLogo class="mr-[-3px]" width="110px" />
       </div>
       <h1 class="text-[#042F2E] font-semibold text-[40px]">Agenda Saúde</h1>
       <p class="text-[#0F766E] text-[17px] font-medium text-center">
